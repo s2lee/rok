@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<div class="main-contents-container">
+	<div class="article-container">
+	<h2 class="category-title" style="margin-bottom:20px;"><a href="{% url 'crazylab:crazyidea_list' %}">크레이지 아이디어</a></h2>
+		<div class="top-article-container">
+			<div class="top-article__section">
+			{% for top in tops %}
+				<div class="top-article">
+					<h3 class="top-article-title"><a href="{{ top.get_absolute_url }}">{{ top.title }}</a></h3>
+					{% if top.image %}
+					<div class="crazylab-list-img-container">
+						<img src="{{top.image.url}}">
+					</div>
+					{% endif %}
+          <span class="top-article-contents">{{ top.contents }}</span>
+						<span class="top-article-stats__comment">
+							<i class="fas fa-comment"></i>
+							<span class="top-article-stats">{{ top.comment_count }}</span>
+						</span>
+						<span style="color:red;font-size:13px" title="추천"><i class="fas fa-long-arrow-alt-up"></i></span>
+						<span class="top-article-stats__recommend">{{ top.all_recommend }}</span>
+				</div>
+			{% endfor %}
+			</div>
+
+			<div class="top-article__section" style="flex:1.7;">
+				<table class="default-article-list-table">
+					<tbody>
+						{% for post in posts %}
+						<tr>
+							<td class="default-article-title-crazylab">
+								<a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+								{% if post.comment_count > 0 %}<span class="list-comments-count">[{{post.comment_count}}]</span>{% endif %}
+								{% if post.is_recent %}
+								 <small class="default-article-time"> {{ post.date_posted|timesince }} 전</small>
+								{% endif %}
+							</td>
+							<td class="default-article-author-crazylab"><a href="{% url 'get_user_profile' post.author.profile.nickname %}">{{ post.author.profile.nickname }}</a></td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+
+				<div class="default-article-list-table-bottom">
+					{% if request.user.is_authenticated %}
+						<button class="article-post-btn"  onclick="location.href='{% url 'crazylab:post_crazyidea' %}' ">글쓰기</button>
+					{% endif %}
+					<div class="pagination">
+
+						{% if is_paginated %}
+			        {% if page_obj.has_previous %}
+			          <a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+								{% if page_obj.number > 3 %}
+			          <a href="?page=1">1</a> ...
+								{% endif %}
+			        {% endif %}
+
+			        {% for num in page_obj.paginator.page_range %}
+			          {% if page_obj.number == num %}
+			            <a href="?page={{ num }}" class="active_page">{{ num }}</a>
+			          {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' and num != page_obj.paginator.num_pages %}
+			            <a href="?page={{ num }}">{{ num }}</a>
+			          {% endif %}
+			        {% endfor %}
+
+			        {% if page_obj.has_next %}
+								{% if page_obj.number < page_obj.paginator.num_pages|add:'-3' %}
+								...
+								{% else %}
+								{% endif %}
+								<a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+			          <a href="?page={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+			        {% endif %}
+
+						{% endif %}
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="default-article-list-container">
+			<div class="tabs-nav">
+		    <div class="tabs-container">
+		      <div class="tabs">
+		        <a role="button" tabindex="0" onclick="openTab(event, 'latest')" class="tab-active" >최신</a>
+		        <a role="button" tabindex="0" onclick="openTab(event, 'popular')">인기</a>
+		      </div>
+		    </div>
+		  </div>
+
+			<div class="mobile-tab-contents-container">
+				<div class="tabcontent tabs-container" id="latest">
+					<table class="default-article-list-table-mobile" >
+						<tbody>
+						{% for post in posts %}
+							<tr>
+								<td class="default-article-title-mobile">
+									<a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+									{% if post.comment_count > 0 %}<span class="mobile-list-comments-count">[{{ post.comment_count }}]</span>{% endif %}
+									<p class="default-article-time-mobile">
+										크레이지 아이디어  {% if post.is_recent %} | {{ post.date_posted|timesince }} 전{% endif %}
+									</p>
+								</td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+					<div class="default-article-list-table-bottom-mobile">
+						<div class="pagination-mobile">
+							{% if is_paginated %}
+								{% if page_obj.has_previous %}
+								<a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-chevron-left"></i></a>
+								{% endif %}
+
+								{% for num in page_obj.paginator.page_range %}
+									{% if page_obj.number == num %}
+										<a href="?page={{ num }}" class="active_page">{{ num }}</a>
+									{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' and num != page_obj.paginator.num_pages %}
+										<a href="?page={{ num }}">{{ num }}</a>
+									{% endif %}
+								{% endfor %}
+								<a href="?page={{ page_obj.next_page_number }}"><i class="fas fa-chevron-right"></i></a>
+							{% endif %}
+						</div>
+					</div>
+
+				</div>
+
+				<div class="top-article__section-mobile tabcontent tabs-container" id="popular">
+					<table class="default-article-list-table-mobile" >
+						<tbody>
+						 {% for top in tops %}
+							<tr class="mobile-top-article-tr">
+								<td class="default-article-title-mobile-top">
+									<a href="{{ top.get_absolute_url }}">{{ top.title }}</a>
+									{% if top.image %}
+									<div class="crazylab-list-img-container-mobile">
+										<img src="{{top.image.url}}">
+									</div>
+									{% endif %}
+									<span class="top-article-contents-mobile">{{ top.contents }}</span>
+									<span class="top-article-stats__comment">
+										<i class="fas fa-comment"></i>
+										<span class="top-article-stats">{{ top.comment_count }}</span>
+									</span>
+									<span style="color:red;font-size:13px" title="추천"><i class="fas fa-long-arrow-alt-up"></i></span>
+									<span class="top-article-stats__recommend">{{ top.all_recommend }}</span>
+								</td>
+							</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+
+
+
+			</div>
+
+
+		</div>
+
+
+	</div>
+</div>
+{% if request.user.is_authenticated %}
+	<button class="article-post-mobile-btn"  onclick="location.href='{% url 'joseon:economy' %}' ">글쓰기</button>
+{% endif %}
+{% endblock %}

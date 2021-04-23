@@ -1,0 +1,315 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<div class="main-contents-container">
+  <div class="article-detail-title-container">
+		<h2 class="article-detail-title">{{ post.title }}</h2><br>
+	</div>
+	<div class="article-detail-container">
+		<div class="article-post-time"><span>입력  {{ post.date_posted | date:'Y.m.d g:i a' }}</span></div>
+		<div class="joseon_detail-author-evaluation-container">
+			<div class="article-author"><a href="{% url 'get_user_profile' post.author.profile.nickname %}">{{ post.author.profile.nickname }}</a></div>
+		</div>
+		{% if post.image %}
+		<div class="crazylab-img-container">
+			<img src="{{post.image.url}}">
+		</div>
+		{% endif %}
+		<p>{{ post.contents }}</p>
+		<div class="joseon_detail-evaluation-container">
+      <div id="recommend-section">
+        {% include 'crazylab/section/recommend_section.html' %}
+      </div>
+      {% if jprofile.department == 'MSIT' %}
+        <div id="star-section">
+          {% include 'crazylab/section/star_section.html'%}
+        </div>
+      {% endif %}
+      <div id="scrap-section">
+        {% include 'crazylab/section/scrap_section.html'%}
+      </div>
+			{% if request.user != post.author %}
+      <div id="post-accuse-section" style="padding:5px 0;">
+        {% include 'crazylab/section/post_accuse_section.html' %}
+      </div>
+			{% endif %}
+		</div>
+
+		<div class="main-comment-section">
+			{% include 'crazylab/section/comments.html' %}
+		</div>
+	</div>
+</div>
+
+{% endblock%}
+
+{% block extra_scripts %}
+<script type="text/javascript">
+	$(document).ready(function(event){
+		$(document).on('click', '#recommend', function(event){
+	    event.preventDefault();
+	    var pk = $(this).attr('value');
+	    $.ajax({
+	      type: 'POST',
+	      url : '{% url "crazylab:recommend" %}',
+	      data: {'id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+	      dataType: 'json',
+	      success: function(response){
+	        $('#recommend-section').html(response['form']);
+	      },
+	      error: function(response, e){
+	        alert("아이템 사용을 실패하였습니다.");
+	      },
+	    });
+	  });
+
+		$(document).on('click', '#star', function(event){
+	    event.preventDefault();
+	    var pk = $(this).attr('value');
+	    $.ajax({
+	      type: 'POST',
+	      url : '{% url "crazylab:add_star" %}',
+	      data: {'id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+	      dataType: 'json',
+	      success: function(response){
+	        $('#star-section').html(response['form']);
+					$('#recommend-section').html(response['form2']);
+	      },
+	      error: function(response, e){
+	        alert("아이템 사용을 실패하였습니다.");
+	      },
+	    });
+	  });
+
+
+		$(document).on('click', '#scrap', function(event){
+	    event.preventDefault();
+	    var pk = $(this).attr('value');
+	    $.ajax({
+	      type: 'POST',
+	      url : '{% url "crazylab:scrap" %}',
+	      data: {'id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+	      dataType: 'json',
+	      success: function(response){
+	        $('#scrap-section').html(response['form'])
+
+	      },
+	      error: function(response, e){
+	        alert("실패하였습니다.");
+	      },
+	    });
+	  });
+
+		$('.reply-btn').click(function() {
+			$(this).next('.reply-form-group').fadeToggle();
+		});
+
+
+		$(document).on('submit','.comment-form', function(event){
+			event.preventDefault();
+			$.ajax({
+				type: 'POST',
+				url : $(this).attr('action'),
+				data: $(this).serialize(),
+				dataType: 'json',
+				success: function(response) {
+					$('.main-comment-section').html(response['form']);
+					$('textarea').val('');
+					$('.reply-btn').click(function() {
+						$(this).next('.reply-form-group').fadeToggle();
+						$('textarea').val('');
+					});
+					$('html, body').animate({ scrollTop: $(document).height() }, 'slow');
+			   	return false;
+				},
+				error: function(response, e){
+						alert("실패하였습니다.");
+				},
+			});
+		});
+
+
+		$(document).on('submit','.reply-form', function(event){
+			event.preventDefault();
+			$.ajax({
+				type: 'POST',
+				url : $(this).attr('action'),
+				data: $(this).serialize(),
+				dataType: 'json',
+				success: function(response) {
+					$('.main-comment-section').html(response['form']);
+					$('textarea').val('');
+					$('.reply-btn').click(function() {
+						$(this).next('.reply-form-group').fadeToggle();
+						$('textarea').val('');
+					});
+				},
+				error: function(response, e){
+						alert("실패하였습니다.");
+				},
+			});
+		});
+
+		$(document).on('click','.comment_up', function(event){
+			event.preventDefault();
+			var pk = $(this).attr('value1');
+			var kind = $(this).attr('value2');
+			$.ajax({
+				type: 'POST',
+			 	url :'{% url "crazylab:up_comment" %}',
+				data: {'id':pk, 'kind':kind, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+				dataType: 'json',
+				success: function(response) {
+					$('.comment-up-section-'+ pk).html(response['form']);
+				},
+				error: function(response, e){
+					alert("실패하였습니다.");
+				},
+			});
+		});
+
+		$(document).on('click','.reply_up', function(event){
+			event.preventDefault();
+			var pk = $(this).attr('value1');
+			var kind = $(this).attr('value2');
+			$.ajax({
+				type: 'POST',
+			 	url :'{% url "crazylab:up_comment" %}',
+				data: {'id':pk, 'kind':kind, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+				dataType: 'json',
+				success: function(response) {
+					$('.reply-up-section-'+ pk).html(response['form']);
+				},
+				error: function(response, e){
+					alert("실패하였습니다.");
+				},
+			});
+		});
+
+		$(document).on('click','.top_up', function(event){
+			event.preventDefault();
+			var pk = $(this).attr('value1');
+			var kind = $(this).attr('value2');
+			$.ajax({
+				type: 'POST',
+			 	url :'{% url "crazylab:up_comment" %}',
+				data: {'id':pk, 'kind':kind, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+				dataType: 'json',
+				success: function(response) {
+					$('.top-up-section-'+ pk).html(response['form']);
+				},
+				error: function(response, e){
+					alert("실패하였습니다.");
+				},
+			});
+		});
+
+		$(document).on('click', '#accuse', function(event){
+			event.preventDefault();
+			var id = $(this).attr('value1');
+			var author = $(this).attr('value2');
+			if(confirm('신고 하시겠습니까?')){
+				$.ajax({
+					type: 'POST',
+					url : '{% url "crazylab:accuse_post" %}',
+					data: {'post_author':author, 'id':id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+					dataType: 'json',
+					success: function(response){
+						$('#post-accuse-section').html(response['form'])
+					},
+					error: function(response, e){
+						alert("아이템 사용을 실패하였습니다.");
+					},
+				});
+			}
+			else
+			{
+				return false;
+			}
+		});
+
+		$(document).on('click', '.comment_accuse', function(event){
+			event.preventDefault();
+			var id = $(this).attr('value1');
+			var author = $(this).attr('value2');
+			var kind = $(this).attr('value3');
+			if(confirm('신고 하시겠습니까?')){
+				$.ajax({
+					type: 'POST',
+					url : '{% url "crazylab:accuse_comment" %}',
+					data: {'comment_author':author, 'kind':kind, 'id':id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+					dataType: 'json',
+					success: function(response){
+						$('.comment-accuse-section-'+ id).html(response['form']);
+					},
+					error: function(response, e){
+						alert("아이템 사용을 실패하였습니다.");
+					},
+				});
+			}
+			else
+			{
+				return false;
+			}
+		});
+
+		$(document).on('click', '.reply_accuse', function(event){
+			event.preventDefault();
+			var id = $(this).attr('value1');
+			var author = $(this).attr('value2');
+			var kind = $(this).attr('value3');
+			if(confirm('신고 하시겠습니까?')){
+				$.ajax({
+					type: 'POST',
+					url : '{% url "crazylab:accuse_comment" %}',
+					data: {'comment_author':author, 'kind':kind, 'id':id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+					dataType: 'json',
+					success: function(response){
+						$('.reply-accuse-section-'+ id).html(response['form']);
+					},
+					error: function(response, e){
+						alert("아이템 사용을 실패하였습니다.");
+					},
+				});
+			}
+			else
+			{
+				return false;
+			}
+		});
+
+		$(document).on('click', '.top_accuse', function(event){
+			event.preventDefault();
+			var id = $(this).attr('value1');
+			var author = $(this).attr('value2');
+			var kind = $(this).attr('value3');
+			if(confirm('신고 하시겠습니까?')){
+				$.ajax({
+					type: 'POST',
+					url : '{% url "crazylab:accuse_comment" %}',
+					data: {'comment_author':author, 'kind':kind, 'id':id, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+					dataType: 'json',
+					success: function(response){
+						$('.top-accuse-section-'+ id).html(response['form']);
+					},
+					error: function(response, e){
+						alert("아이템 사용을 실패하였습니다.");
+					},
+				});
+			}
+			else
+			{
+				return false;
+			}
+		});
+
+
+
+
+	});
+</script>
+{% endblock extra_scripts %}

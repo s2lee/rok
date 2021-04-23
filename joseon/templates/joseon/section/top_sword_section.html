@@ -1,0 +1,12 @@
+{% load static %}
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<form action="{% url 'joseon:get_sword' %}" method="POST">
+  {% csrf_token %}
+  <button type="submit" class="top_sword joseon_detail_comment_btn" value1="{{top.id}}" value2="{{top.author.id}}" value3="top">
+		<img src="{% static 'images/sword.png' %}" alt="" title="칼">
+	</button>
+</form>

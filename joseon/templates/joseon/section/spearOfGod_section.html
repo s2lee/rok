@@ -1,0 +1,19 @@
+{% load static %}
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<form action="{% url 'joseon:add_spearOfGod' %}" method="POST">
+  {% csrf_token %}
+  {% if request.user in post.spearOfGod.all %}
+    <button type="submit" id="spearOfGod" name="post_id" value="{{ post.id }}" class="joseon_detail_btn_god">
+			<img src="{% static 'images/spearofgod-red.png' %}" alt="" title="모든 것을 뚫는 창" >
+		</button>
+  {% else %}
+    <button type="submit" id="spearOfGod" name="post_id" value="{{ post.id }}" class="joseon_detail_btn_god">
+			<img src="{% static 'images/spearofgod-detail.png' %}" alt="" title="모든 것을 뚫는 창">
+		</button>
+
+  {% endif %}
+</form>

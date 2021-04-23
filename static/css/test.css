@@ -1,0 +1,57 @@
+.jprofile-update-form{
+  margin: 0 auto;
+  max-width: 500px;
+  overflow: hidden;
+}
+
+.jprofile-update__contents-group{
+  margin-bottom:18px;
+  margin-top:50px;
+  text-align:center;
+}
+
+.jprofile-update__contents-group .label{
+  font-weight: bold;
+  font-size:1.1rem;
+  margin-left: 1px;
+}
+
+.department-label{
+  color: black;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor:pointer;
+  margin-left: 8px;
+}
+
+.jprofile-update__contents-group .jprofile-update-error-message{
+  color: red;
+  font-size: 0.9rem;
+  margin-left: 1px;
+}
+
+.department-selection-btn{
+  display:block;
+  width:120px;
+  height:40px;
+  border: 1px solid #fff;
+  background-color:black;
+  font-size:14px;
+  color:#fff;
+  cursor:pointer;
+  margin:20px auto;
+  letter-spacing: 2px;
+  line-height: 40px;
+  font-weight: bold;
+}
+
+.department-selection-btn:hover,
+.department-selection-btn:focus{
+  background-color:#0d0d0d;
+  outline: none;
+}
+
+
+.jprofile-update-form{
+  max-width: 350px;
+}

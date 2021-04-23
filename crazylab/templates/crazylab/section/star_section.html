@@ -1,0 +1,17 @@
+{% if msg %}
+	<script>alert("{{ msg }}")</script>
+{% endif %}
+<form action="{% url 'crazylab:add_star' %}" method='POST'>
+  {% csrf_token %}
+  {% if request.user in post.star.all %}
+    <button type="submit" id="star" value="{{ post.id }}" class="joseon_detail_btn">
+			<span style="color:yellow;" title="별"><i class="far fa-star"></i></span>
+		</button>
+		<span class="joseon_detail-btn-count" style="color:yellow;">{{ get_total_star }}</span>
+  {% else %}
+    <button type="submit" id="star" value="{{ post.id }}" class="joseon_detail_btn">
+			<span><i class="far fa-star"></i></span>
+		</button>
+		<span class="joseon_detail-btn-count">{{ get_total_star }}</span>
+  {% endif %}
+</form>

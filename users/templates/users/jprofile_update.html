@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main-contents-container">
+  <form method="POST" enctype="multipart/form-data" class="jprofile-update-form">
+    {% csrf_token %}
+    <div class="jprofile-update__contents-group" >
+        <label for="" class="label">부서선택</label><br><br>
+        <div class="radio-container">
+          <div class="radio">
+            <input type="radio" class="jprofile-radio" name="department" id="id_department_0" value="MSIT">
+            <label for="id_department_0" class="department-label">공조</label>
+          </div>
+          <div class="radio">
+            <input type="radio" name="department" id="id_department_1" value="MPM">
+            <label for="id_department_1" class="department-label">이조</label>
+          </div>
+          <div class="radio">
+            <input type="radio" name="department" id="id_department_2" value="BAI">
+            <label for="id_department_2" class="department-label">사간원</label>
+          </div>
+          <div class="radio">
+            <input type="radio" name="department" id="id_department_3" value="SPO">
+            <label for="id_department_3" class="department-label">사헌부</label>
+          </div>
+          <div class="radio">
+            <input type="radio" name="department" id="id_department_4" value="NPA">
+            <label for="id_department_4" class="department-label">의금부</label>
+          </div>
+        </div>
+        <span class="jprofile-update-error-message">{{ jprofile_update_form.department.errors }}</span>
+    </div>
+
+    <div class="jprofile-update__contents-group">
+        <label for="" class="label">정치성향</label><br><br>
+        <div class="radio-container">
+          <div class="radio">
+            <input type="radio" name="political_orientation" id="id_political_orientation_0" value="progressivism">
+            <label for="id_political_orientation_0" class="update_political_orientation-label">진보</label>
+          </div>
+          <div class="radio">
+            <input type="radio" name="political_orientation" id="id_political_orientation_1" value="centrism">
+            <label for="id_political_orientation_1" class="update_political_orientation-label">중도/선택안함</label>
+          </div>
+          <div class="radio">
+            <input type="radio" name="political_orientation" id="id_political_orientation_2" value="conservatism">
+            <label for="id_political_orientation_2" class="update_political_orientation-label">보수</label>
+          </div>
+        </div>
+        <span class="jprofile-update-error-message">{{ jprofile_update_form.political_orientation.errors }}</span>
+    </div>
+    <div>
+      <button type="submit" class="department-selection-btn">선택완료</button>
+    </div>
+  </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,408 @@
+{% extends "base.html" %}
+{% load static %}
+{% load user_tags %}
+{% block content %}
+<div class="inventory-container">
+  <h2 class="inventory-subheading">보유한 코인</h2>
+  <table class="inventory-table">
+    <tbody>
+      <td>
+        <i class="fas fa-coins coin-icon" style="color: black" title="검은색"></i>
+        <span class="inventory-NumberOfCoin">{{ coin.blackcoin }}</span>
+      </td>
+      <td>
+        <i class="fas fa-coins coin-icon" style="color: #4d4dff" title="파란색"></i>
+        <span class="inventory-NumberOfCoin">{{ coin.bluecoin }}</span>
+      </td>
+      <td>
+        <i class="fas fa-coins coin-icon" style="color: #1aff1a" title="초록색"></i>
+        <span class="inventory-NumberOfCoin">{{ coin.greencoin }}</span>
+      </td>
+      <td>
+        <i class="fas fa-coins coin-icon" style="color: #ff944d" title="주황색"></i>
+        <span class="inventory-NumberOfCoin">{{ coin.orangecoin }}</span>
+      </td>
+      <td>
+        <i class="fas fa-coins coin-icon" style="color: #ff0066" title="분홍색"></i>
+        <span class="inventory-NumberOfCoin">{{ coin.pinkcoin }}</span>
+      </td>
+      <td>
+        <i class="fas fa-coins coin-icon" style="color: #bf40bf" title="보라색"></i>
+        <span class="inventory-NumberOfCoin">{{ coin.purplecoin }}</span>
+      </td>
+    </tbody>
+  </table>
+  <br><br>
+
+  <h2 class="inventory-subheading">기본아이템</h2>
+  <table class="inventory-table">
+    <tbody>
+      <td>
+        <img class="inventory-item-img" src="{% static 'images/spear.svg' %}" alt="" title="창">
+        <span class="default-item-holding">{{ item.spear }}</span>
+      </td>
+      <td>
+        <i class="fas fa-shield-alt inventory-item-icon" title="방패"></i>
+        <span class="default-item-holding">{{ item.shield }}</span>
+      </td>
+      <td>
+        <img class="inventory-item-img" src="{% static 'images/sword.png' %}" alt="" title="칼">
+        <span class="default-item-holding">{{ item.sword }}</span>
+      </td>
+      <td>
+        <img class="inventory-item-img" src="{% static 'images/armor.svg' %}" alt="" title="갑옷">
+        <span class="default-item-holding">{{ item.armor }}</span>
+      </td>
+      <td>
+        <i class="far fa-envelope inventory-item-icon" title="편지"></i>
+        <span class="default-item-holding">{{ item.letter }}</span>
+      </td>
+    </tbody>
+  </table>
+  <br><br>
+
+  {% if request.user|has_group:"Ranker" %}
+  <h2 class="inventory-subheading">스페셜 아이템</h2>
+  <table class="inventory-table">
+    <tbody>
+      <td>
+        <img class="inventory-item-img" src="{% static 'images/spearofgod.png' %}" alt="" title="모든 것을 뚫는 창">
+        <span class="default-item-holding">{{ item.spearOfGod }}</span>
+      </td>
+      <td>
+        <img class="inventory-item-img" src="{% static 'images/shieldofgod.png' %}" alt="" title="모든 것을 막는 방패">
+        <span class="default-item-holding">{{ item.shieldOfGod }}</span>
+      </td>
+      <td>
+        <img class="inventory-item-img" src="{% static 'images/swordofgod.png' %}" alt="" title="모든 것을 자르는 칼">
+        <span class="default-item-holding">{{ item.swordOfGod }}</span>
+      </td>
+      <td>
+        <img class="inventory-item-img impeach_shield" src="{% static 'images/impeach_shield.png' %}" alt="" title="탄핵방패">
+        <span class="default-item-holding">{{ item.impeachment_shield }}</span>
+      </td>
+    </tbody>
+  </table>
+  <br><br>
+
+  {% else %}
+    {% if jprofile.department == 'MSIT' %}
+    <h2 class="inventory-subheading">스페셜 아이템 및 증서</h2>
+    <table class="inventory-table">
+      <tbody>
+        <td>
+          <i class="far fa-star inventory-item-icon" title="별"></i>
+          <span class="default-item-holding">{{ item.star }}</span>
+        </td>
+        <td>
+          <i class="far fa-moon inventory-item-icon" title="공조 증서"></i>
+          <span class="default-item-holding">{{ certificate.MSITcertificate }}</span>
+        </td>
+        <td>
+          <i class="fas fa-umbrella inventory-item-icon" title="의정부 증서"></i>
+          <span class="default-item-holding">{{ certificate.OPCcertificate }}</span>
+        </td>
+      </tbody>
+    </table>
+    <br><br>
+
+    {% elif jprofile.department == 'MPM' %}
+    <h2 class="inventory-subheading">스페셜 아이템 및 증서</h2>
+    <table class="inventory-table">
+      <tbody>
+        <td>
+          <i class="fas fa-award inventory-item-icon mpmicon" style="margin-left:3px;" title="인사 추천권"></i>
+          <span class="default-item-holding">{{ item.reference_letter }}</span>
+        </td>
+        <td>
+          <i class="far fas fa-chess inventory-item-icon" title="이조 증서"></i>
+          <span class="default-item-holding">{{ certificate.MPMcertificate }}</span>
+        </td>
+        <td>
+          <i class="fas fa-umbrella inventory-item-icon" title="의정부 증서"></i>
+          <span class="default-item-holding">{{ certificate.OPCcertificate }}</span>
+        </td>
+      </tbody>
+    </table>
+    <br><br>
+
+    {% elif jprofile.department == 'BAI' %}
+    <h2 class="inventory-subheading">스페셜 아이템 및 증서</h2>
+    <table class="inventory-table">
+      <tbody>
+        <td>
+          <img class="inventory-item-img" src="{% static 'images/bai.svg' %}" alt="" title="사간의 글">
+          <span class="default-item-holding">{{ item.refutation }}</span>
+        </td>
+        <td>
+          <i class="fas fa-mitten inventory-item-icon baiicon" title="사간원 증서"></i>
+          <span class="default-item-holding">{{ certificate.BAIcertificate }}</span>
+        </td>
+        <td>
+          <i class="fas fa-umbrella inventory-item-icon" title="의정부 증서"></i>
+          <span class="default-item-holding">{{ certificate.OPCcertificate }}</span>
+        </td>
+      </tbody>
+    </table>
+    <br><br>
+
+    {% elif jprofile.department == 'SPO' %}
+    <h2 class="inventory-subheading">스페셜 아이템 및 증서</h2>
+    <table class="inventory-table">
+      <tbody>
+        <td>
+          <i class="fas fa-balance-scale inventory-item-icon" title="탄핵권"></i>
+          <span class="default-item-holding">{{ item.impeachment }}</span>
+        </td>
+        <td>
+          <i class="fas fa-crow inventory-item-icon" title="사헌부 증서"></i>
+          <span class="default-item-holding">{{ certificate.SPOcertificate }}</span>
+        </td>
+        <td>
+          <i class="fas fa-umbrella inventory-item-icon" title="의정부 증서"></i>
+          <span class="default-item-holding">{{ certificate.OPCcertificate }}</span>
+        </td>
+      </tbody>
+    </table>
+    <br><br>
+
+    {% elif jprofile.department == 'NPA' %}
+    <h2 class="inventory-subheading">스페셜 아이템 및 증서</h2>
+    <table class="inventory-table">
+      <tbody>
+        <td>
+          <img class="inventory-item-img" src="{% static 'images/swordofgod.png' %}" alt="" title="모든 것을 자르는 칼">
+          <span class="default-item-holding">{{ item.swordOfGod }}</span>
+        </td>
+        <td>
+          <i class="fas fa-feather-alt inventory-item-icon" title="의금부 증서"></i>
+          <span class="default-item-holding">{{ certificate.NPAcertificate }}</span>
+        </td>
+        <td>
+          <i class="fas fa-umbrella inventory-item-icon" title="의정부 증서"></i>
+          <span class="default-item-holding">{{ certificate.OPCcertificate }}</span>
+        </td>
+      </tbody>
+    </table>
+    <br><br>
+
+    {% elif jprofile.department == '의정부' %}
+    <h2 class="inventory-subheading">스페셜 아이템 및 증서</h2>
+    <table class="inventory-table">
+      <tbody>
+        <td>
+          <img class="inventory-item-img" src="{% static 'images/spearofgod.png' %}" alt="" title="모든 것을 뚫는 창">
+          <span class="default-item-holding">{{ item.spearOfGod }}</span>
+        </td>
+        <td>
+          <img class="inventory-item-img" src="{% static 'images/shieldofgod.png' %}" alt="" title="모든 것을 막는 방패">
+          <span class="default-item-holding">{{ item.shieldOfGod }}</span>
+        </td>
+        <td>
+          <img class="inventory-item-img" src="{% static 'images/swordofgod.png' %}" alt="" title="모든 것을 자르는 칼">
+          <span class="default-item-holding">{{ item.swordOfGod }}</span>
+        </td>
+        <td>
+          <i class="fas fa-umbrella inventory-item-icon" title="의정부 증서"></i>
+          <span class="default-item-holding">{{ certificate.OPCcertificate }}</span>
+        </td>
+      </tbody>
+    </table>
+    <br><br>
+    {% else %}
+    {% endif %}
+
+    {% if jprofile.department == 'MSIT' %}
+    <h2 class="inventory-subheading">키</h2>
+    <table class="inventory-key-table">
+      <tbody>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Alpha1</span><span class="key-icon-name-mobile">A-1</span></i>
+          <span class="default-item-holding">{{ userkey.MSITfirstkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Alpha2</span><span class="key-icon-name-mobile">A-2</span></i>
+          <span class="default-item-holding">{{ userkey.MSITsecondkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Alpha3</span><span class="key-icon-name-mobile">A-3</span></i>
+          <span class="default-item-holding">{{ userkey.MSITthirdkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Alpha4</span><span class="key-icon-name-mobile">A-4</span></i>
+          <span class="default-item-holding">{{ userkey.MSITfourthkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Alpha5</span><span class="key-icon-name-mobile">A-5</span></i>
+          <span class="default-item-holding">{{ userkey.MSITfifthkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Omega1</span><span class="key-icon-name-mobile">O-1</span></i>
+          <span class="default-item-holding">{{ userkey.OPCfirstkey }}</span>
+        </td>
+      </tbody>
+    </table>
+    <br><br>
+
+    {% elif jprofile.department == 'MPM' %}
+    <h2 class="inventory-subheading">키</h2>
+    <table class="inventory-key-table">
+      <tbody>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Delta1</span><span class="key-icon-name-mobile">D-1</span></i>
+          <span class="default-item-holding">{{ userkey.MPMfirstkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Delta2</span><span class="key-icon-name-mobile">D-2</span></i>
+          <span class="default-item-holding">{{ userkey.MPMsecondkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Delta3</span><span class="key-icon-name-mobile">D-3</span></i>
+          <span class="default-item-holding">{{ userkey.MPMthirdkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Delta4</span><span class="key-icon-name-mobile">D-4</span></i>
+          <span class="default-item-holding">{{ userkey.MPMfourthkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Delta5</span><span class="key-icon-name-mobile">D-5</span></i>
+          <span class="default-item-holding">{{ userkey.MPMfifthkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Omega1</span><span class="key-icon-name-mobile">O-1</span></i>
+          <span class="default-item-holding">{{ userkey.OPCfirstkey }}</span>
+        </td>
+      </tbody>
+    </table>
+    <br><br>
+
+    {% elif jprofile.department == 'BAI' %}
+    <h2 class="inventory-subheading">키</h2>
+    <table class="inventory-key-table">
+      <tbody>
+        <td>
+          <i class="fas fa-key inventory-key baikey"><span class="key-icon-name">Epsilon1</span><span class="key-icon-name-mobile">E-1</span></i>
+          <span class="default-item-holding">{{ userkey.BAIfirstkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key baikey"><span class="key-icon-name">Epsilon2</span><span class="key-icon-name-mobile">E-2</span></i>
+          <span class="default-item-holding">{{ userkey.BAIsecondkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key baikey"><span class="key-icon-name">Epsilon3</span><span class="key-icon-name-mobile">E-3</span></i>
+          <span class="default-item-holding">{{ userkey.BAIthirdkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key baikey"><span class="key-icon-name">Epsilon4</span><span class="key-icon-name-mobile">E-4</span></i>
+          <span class="default-item-holding">{{ userkey.BAIfourthkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key baikey"><span class="key-icon-name">Omega1</span><span class="key-icon-name-mobile">O-1</span></i>
+          <span class="default-item-holding">{{ userkey.OPCfirstkey }}</span>
+        </td>
+      </tbody>
+    </table>
+    <br><br>
+
+    {% elif jprofile.department == 'SPO' %}
+    <h2 class="inventory-subheading">키</h2>
+    <table class="inventory-key-table">
+      <tbody>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Beta1</span><span class="key-icon-name-mobile">B-1</span></i>
+          <span class="default-item-holding">{{ userkey.SPOfirstkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Beta2</span><span class="key-icon-name-mobile">B-2</span></i>
+          <span class="default-item-holding">{{ userkey.SPOsecondkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Beta3</span><span class="key-icon-name-mobile">B-3</span></i>
+          <span class="default-item-holding">{{ userkey.SPOthirdkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Beta4</span><span class="key-icon-name-mobile">B-4</span></i>
+          <span class="default-item-holding">{{ userkey.SPOfourthkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Beta5</span><span class="key-icon-name-mobile">B-5</span></i>
+          <span class="default-item-holding">{{ userkey.SPOfifthkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Omega1</span><span class="key-icon-name-mobile">O-1</span></i>
+          <span class="default-item-holding">{{ userkey.OPCfirstkey }}</span>
+        </td>
+      </tbody>
+    </table>
+    <br><br>
+    {% elif jprofile.department == 'NPA' %}
+    <h2 class="inventory-subheading">키</h2>
+    <table class="inventory-key-table">
+      <tbody>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Gamma1</span><span class="key-icon-name-mobile">G-1</span></i>
+          <span class="default-item-holding">{{ userkey.NPAfirstkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Gamma2</span><span class="key-icon-name-mobile">G-2</span></i>
+          <span class="default-item-holding">{{ userkey.NPAsecondkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Gamma3</span><span class="key-icon-name-mobile">G-3</span></i>
+          <span class="default-item-holding">{{ userkey.NPAthirdkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Gamma4</span><span class="key-icon-name-mobile">G-4</span></i>
+          <span class="default-item-holding">{{ userkey.NPAfourthkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Gamma5</span><span class="key-icon-name-mobile">G-5</span></i>
+          <span class="default-item-holding">{{ userkey.NPAfifthkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Omega1</span><span class="key-icon-name-mobile">O-1</span></i>
+          <span class="default-item-holding">{{ userkey.OPCfirstkey }}</span>
+        </td>
+      </tbody>
+    </table>
+    <br><br>
+
+    {% elif jprofile.department == '의정부' %}
+    <h2 class="inventory-subheading">키</h2>
+    <table class="inventory-key-table">
+      <tbody>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Omega2</span><span class="key-icon-name-mobile">O-2</span></i>
+          <span class="default-item-holding">{{ userkey.OPCsecondkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Omega3</span><span class="key-icon-name-mobile">O-3</span></i>
+          <span class="default-item-holding">{{ userkey.OPCthirdkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Omega4</span><span class="key-icon-name-mobile">O-4</span></i>
+          <span class="default-item-holding">{{ userkey.OPCfourthkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Omega5</span><span class="key-icon-name-mobile">O-5</span></i>
+          <span class="default-item-holding">{{ userkey.OPCfifthkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Omega6</span><span class="key-icon-name-mobile">O-6</span></i>
+          <span class="default-item-holding">{{ userkey.OPCsixthkey }}</span>
+        </td>
+        <td>
+          <i class="fas fa-key inventory-key"><span class="key-icon-name">Omega7</span><span class="key-icon-name-mobile">O-7</span></i>
+          <span class="default-item-holding">{{ userkey.OPCseventhkey }}</span>
+        </td>
+      </tbody>
+    </table>
+    <br><br>
+
+    {% else %}
+    {% endif %}
+
+  {% endif %}
+</div>
+
+{% endblock content %}

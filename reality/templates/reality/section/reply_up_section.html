@@ -1,0 +1,13 @@
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<form action="{% url 'reality:up_comment' %}" method='POST'>
+  {% csrf_token %}
+  {% if request.user in reply.up.all %}
+    <button type="submit" class="reply_up" value1="{{ reply.id }}" value2="reply" style="color:red;">Up</button>{{ reply.up.all.count }}
+  {% else %}
+    <button type="submit" class="reply_up" value1="{{ reply.id }}" value2="reply">Up</button>{{ reply.up.all.count }}
+  {% endif %}
+</form>

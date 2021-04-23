@@ -1,0 +1,11 @@
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<form action="{% url 'joseon:recommended' %}" method="POST">
+  {% csrf_token %}
+  <button type="submit" class="top_recommended joseon_detail_comment_btn"  value1="{{top.id}}" value2="{{top.author.id}}" value3="top">
+		<span style="color: #0d0d0d;"><i class="fas fa-award" title="인사추천권"></i></span>
+	</button>
+</form>

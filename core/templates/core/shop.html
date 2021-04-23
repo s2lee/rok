@@ -1,0 +1,2134 @@
+{% extends "base.html" %}
+{% load static %}
+{% load core_tags %}
+{% block content %}
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<div class="shop-container">
+	<h2 class="shop-subheading">코인 보유량</h2>
+  <table class="shop-coin-holding-table">
+    <tbody>
+      <td><i class="fas fa-coins" style="color: black" title="검은색"></i><span class="shop-NumberOfCoin">{{ coin.blackcoin }}</span></td>
+      <td><i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i><span class="shop-NumberOfCoin">{{ coin.bluecoin }}</span></td>
+      <td><i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i><span class="shop-NumberOfCoin">{{ coin.greencoin }}</span></td>
+      <td><i class="fas fa-coins" style="color: #ff944d" title="주황색"></i><span class="shop-NumberOfCoin">{{ coin.orangecoin }}</span></td>
+      <td><i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i><span class="shop-NumberOfCoin">{{ coin.pinkcoin }}</span></td>
+      <td><i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i><span class="shop-NumberOfCoin">{{ coin.purplecoin }}</span></td>
+    </tbody>
+  </table>
+  <br><br>
+
+	<h2 class="shop-subheading">기본 아이템</h2>
+	<div class="carousel owl-carousel">
+	  <div class="card">
+	    <div class="item-imgBox">
+	      <img class="item-img" src="{% static 'images/spear.png' %}" alt="" >
+	    </div>
+	    <div class="details">
+	      <div class="textContent">
+	        <h3 class="item-name">창</h3>
+	      </div>
+	      <div class="price"><i class="fas fa-coins" style="color: black;" title="검은색"></i> 1개</div>
+	      <form action="{% url 'core:buySpear' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:#ff0000">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>창</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-shield-alt"></i>
+	    </div>
+	    <div class="details">
+	      <div class="textContent">
+	        <h3 class="item-name">방패</h3>
+	      </div>
+	      <div class="price"><i class="fas fa-coins" style="color: black;" title="검은색"></i> 1개</div>
+	      <form action="{% url 'core:buyShield' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:#006399">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>방패</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-imgBox">
+	      <img class="item-img" src="{% static 'images/sword.png' %}" alt="">
+	    </div>
+	    <div class="details">
+	      <div class="textContent">
+	        <h3 class="item-name">칼</h3>
+	      </div>
+	      <div class="price">
+	        <i class="fas fa-coins" style="color: black;" title="검은색"></i>
+	        {% if jprofile.position == '도사' %}
+	          18개
+	        {% elif jprofile.position == '경력' %}
+	          16개
+	        {% elif jprofile.position == '동지사' %}
+	          14개
+	        {% elif jprofile.position == '지사' %}
+	          12개
+	        {% elif jprofile.position == '판사' %}
+	          10개
+	        {% else %}
+	          20개
+	        {% endif %}
+	      </div>
+	      <form action="{% url 'core:buySword' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	    	</form>
+	    </div>
+	    <div class="description" >
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>칼</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-imgBox">
+	      <img class="item-img" src="{% static 'images/armor.svg' %}" alt="" >
+	    </div>
+	    <div class="details">
+	      <div class="textContent">
+	        <h3 class="item-name">갑옷</h3>
+	      </div>
+	      <div class="price"><i class="fas fa-coins" style="color: black;" title="검은색"></i> 30개</div>
+	      <form action="{% url 'core:buyArmor' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" >
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>갑옷</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="far fa-envelope"></i>
+	    </div>
+	    <div class="details">
+	      <div class="textContent">
+	        <h3 class="item-name">편지</h3>
+	      </div>
+	      <div class="price"><i class="fas fa-coins" style="color: black;" title="검은색"></i> 10개</div>
+	      <form action="{% url 'core:buyLetter' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" >
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>편지</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<br><br>
+
+	{% if request.user|has_group:"Ranker" %}
+	<h2 class="shop-subheading">랭커 아이템</h2>
+	<div class="carousel owl-carousel">
+	  <div class="card">
+	    <div class="item-imgBox">
+	      <img class="item-img" src="{% static 'images/spearofgod.png' %}" alt="">
+	    </div>
+	    <div class="god-details">
+	      <div class="textContent">
+	        <h3 class="god-item-name">모든 것을 뚫는 창</h3>
+	      </div>
+	      <div class="god-price">가격&nbsp;&nbsp;<i class="fas fa-coins" style="color: black;" title="검은색"></i> 200개</div>
+	      <form action="{% url 'core:buySpearOfGod' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2 class="god-item">모든 것을 뚫는 창</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-imgBox">
+	      <img class="item-img" src="{% static 'images/shieldofgod.png' %}" alt="">
+	    </div>
+	    <div class="god-details">
+	      <div class="textContent">
+	        <h3 class="god-item-name">모든 것을 막는 방패</h3>
+	      </div>
+	      <div class="god-price">가격&nbsp;&nbsp;<i class="fas fa-coins" style="color: black;" title="검은색"></i> 200개</div>
+	      <form action="{% url 'core:buyShieldOfGod' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2 class="god-item">모든 것을 막는 방패</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-imgBox">
+	      <img class="item-img" src="{% static 'images/swordofgod.png' %}" alt="">
+	    </div>
+	    <div class="god-details">
+	      <div class="textContent">
+	        <h3 class="god-item-name">모든 것을 자르는 칼</h3>
+	      </div>
+	      <div class="god-price">가격&nbsp;&nbsp;<i class="fas fa-coins" style="color: black;" title="검은색"></i> 100개</div>
+	      <form action="{% url 'core:buySwordOfGod' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2 class="god-item">모든 것을 자르는 칼</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-imgBox">
+	      <img class="item-img" src="{% static 'images/impeach_shield.png' %}" alt="">
+	    </div>
+	    <div class="god-details">
+	      <div class="textContent">
+	        <h3 class="god-item-name">탄핵 방패</h3>
+	      </div>
+	      <div class="god-price">가격&nbsp;&nbsp;<i class="fas fa-coins" style="color: black;" title="검은색"></i> 80개</div>
+	      <form action="{% url 'core:buyImpeachment_Shield' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2 class="god-item">탄핵 방패</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="far fa-registered"></i>
+	    </div>
+	    <div class="certificate-details">
+	      <div class="textContent">
+	        <h3 class="certificate-name">랭크 포인트</h3>
+	      </div>
+	      <div class="certificate-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp5개
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp5개
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp5개
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp5개
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp5개
+	      </div>
+	      <form action="{% url 'core:buyRankPoint' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2 class="god-item">랭크 포인트</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<br><br>
+
+	{% else %}
+	<h2 class="shop-subheading">스페셜 아이템</h2>
+	<div class="carousel owl-carousel">
+	  {% if jprofile.department == 'MSIT' and jprofile.levels <= 11 %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="far fa-star"></i>
+	    </div>
+	    <div class="details">
+	      <div class="textContent">
+	        <h3 class="item-name">별</h3>
+	      </div>
+	      <div class="price"><i class="fas fa-coins" style="color: black;" title="검은색"></i>
+	        {% if jprofile.position == '공조좌랑' %}
+	         50개
+	        {% elif jprofile.position == '공조정랑' %}
+	         40개
+	        {% elif jprofile.position == '공조참의' %}
+	         30개
+	        {% elif jprofile.position == '공조참판' %}
+	         25개
+	        {% elif jprofile.position == '공조판서' %}
+	         20개
+	        {% endif %}
+	      </div>
+	      <form action="{% url 'core:buyStar' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit"class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:yellow;">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>별</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  {% elif jprofile.department == 'MPM' and jprofile.levels <= 11 %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-award"></i>
+	    </div>
+	    <div class="details">
+	      <div class="textContent">
+	        <h3 class="item-name">인사추천권</h3>
+	      </div>
+	      <div class="price"><i class="fas fa-coins" style="color: black;" title="검은색"></i>
+	        {% if jprofile.position == '이조좌랑' %}
+	         80개
+	        {% elif jprofile.position == '이조정랑' %}
+	         60개
+	        {% elif jprofile.position == '이조참의' %}
+	         40개
+	        {% elif jprofile.position == '이조참판' %}
+	         30개
+	        {% elif jprofile.position == '이조판서' %}
+	         20개
+	        {% endif %}
+	      </div>
+	      <form action="{% url 'core:buyReference_Letter' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: #DAA520">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>인사추천권</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  {% elif jprofile.department == 'BAI' and jprofile.levels <= 11 %}
+	  <div class="card">
+	    <div class="item-imgBox">
+	      <img class="item-img" src="{% static 'images/bai.svg' %}" alt="">
+	    </div>
+	    <div class="details">
+	      <div class="textContent">
+	        <h3 class="item-name">사간의 글</h3>
+	      </div>
+	      <div class="price"><i class="fas fa-coins" style="color: black;" title="검은색"></i>
+	        {% if jprofile.position == '정언' %}
+	           50개
+	        {% elif jprofile.position == '헌납' %}
+	           40개
+	        {% elif jprofile.position == '사간' %}
+	           30개
+	        {% elif jprofile.position == '대사간' %}
+	           20개
+	        {% endif %}
+	      </div>
+	      <form action="{% url 'core:buyRefutation' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:#4dff4d">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>사간의 글</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  {% elif jprofile.department == 'SPO' and jprofile.levels <= 11 %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-balance-scale"></i>
+	    </div>
+	    <div class="details">
+	      <div class="textContent">
+	        <h3 class="item-name">탄핵권</h3>
+	      </div>
+	      <div class="price"><i class="fas fa-coins" style="color: black;" title="검은색"></i>
+	        {% if jprofile.position == '감찰' %}
+	           80개
+	        {% elif jprofile.position == '지평' %}
+	           60개
+	        {% elif jprofile.position == '장령' %}
+	           40개
+	        {% elif jprofile.position == '집의' %}
+	           30개
+	        {% elif jprofile.position == '대사헌' %}
+	           20개
+	        {% endif %}
+	      </div>
+	      <form action="{% url 'core:buyImpeachment' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: #990099">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>탄핵권</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  {% elif jprofile.department == 'NPA' and jprofile.position == '판사' %}
+	  <div class="card">
+	    <div class="item-imgBox">
+	      <img class="item-img" src="{% static 'images/swordofgod.png' %}" alt="">
+	    </div>
+	    <div class="god-details">
+	      <div class="textContent">
+	        <h3 class="god-item-name">모든 것을 자르는 칼</h3>
+	      </div>
+	      <div class="god-price">가격&nbsp;&nbsp;<i class="fas fa-coins" style="color: black;" title="검은색"></i> 100개</div>
+	      <form action="{% url 'core:buySwordOfGod' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2 class="god-item">모든 것을 자르는 칼</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  {% elif jprofile.department == '의정부' %}
+	    {% if jprofile.position == '우참찬' or jprofile.position == '우찬성' or jprofile.levels == 1 %}
+	    <div class="card">
+	      <div class="item-imgBox">
+	        <img class="item-img" src="{% static 'images/shieldofgod.png' %}" alt="">
+	      </div>
+	      <div class="god-details">
+	        <div class="textContent">
+	          <h3 class="god-item-name">모든 것을 막는 방패</h3>
+	        </div>
+	        <div class="god-price">가격&nbsp;&nbsp;<i class="fas fa-coins" style="color: black;" title="검은색"></i>
+	          {% if jprofile.position == '우참찬' %}
+	           300개
+	          {% elif jprofile.position == '우찬성'%}
+	           250개
+	          {% else %}
+	           200개
+	          {% endif %}
+	        </div>
+	      	<form action="{% url 'core:buyShieldOfGod' %}" method="POST">
+	          {% csrf_token %}
+	          <input type="number" class="input-number" name="count" min="1">
+	          <button type="submit"class="item-buy-btn">구입</button>
+	        </form>
+	      </div>
+	      <div class="description" style="background: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);">
+	        <div class="icon"><i class="fas fa-info-circle"></i></div>
+	        <div class="contents">
+	          <h2 class="god-item">모든 것을 막는 방패</h2>
+	          <p>Lorem ipsum dolor sit amet,
+	            consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	            es, harum eaque dolorem eos,
+	          </p>
+	        </div>
+	      </div>
+	    </div>
+	    {% endif %}
+	    {% if jprofile.position == '좌참찬' or jprofile.position == '좌찬성' or jprofile.levels == 1 %}
+	    <div class="card">
+	      <div class="item-imgBox">
+	        <img class="item-img" src="{% static 'images/spearofgod.png' %}" alt="">
+	      </div>
+	      <div class="god-details">
+	        <div class="textContent">
+	          <h3 class="god-item-name">모든 것을 뚫는 창</h3>
+	        </div>
+	        <div class="god-price">가격&nbsp;&nbsp;<i class="fas fa-coins" style="color: black;" title="검은색"></i>
+	          {% if jprofile.position == '좌참찬' %}
+	           300개
+	          {% elif jprofile.position == '좌찬성'%}
+	           250개
+	          {% else %}
+	           200개
+	          {% endif %}
+	        </div>
+	        <form action="{% url 'core:buySpearOfGod' %}" method="POST">
+	          {% csrf_token %}
+	          <input type="number" class="input-number" name="count" min="1">
+	          <button type="submit" class="item-buy-btn">구입</button>
+	      </div>
+	      <div class="description" style="background: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);">
+	        <div class="icon"><i class="fas fa-info-circle"></i></div>
+	        <div class="contents">
+	          <h2 class="god-item">모든 것을 뚫는 창</h2>
+	          <p>Lorem ipsum dolor sit amet,
+	            consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	            es, harum eaque dolorem eos,
+	          </p>
+	        </div>
+	      </div>
+	    </div>
+	    {% endif %}
+	    {% if jprofile.levels == 1 %}
+	    <div class="card">
+	      <div class="item-imgBox">
+	        <img class="item-img" src="{% static 'images/swordofgod.png' %}" alt="">
+	      </div>
+	      <div class="god-details">
+	        <div class="textContent">
+	          <h3 class="god-item-name">모든 것을 자르는 검</h3>
+	        </div>
+	        <div class="god-price">가격&nbsp;&nbsp;<i class="fas fa-coins" style="color: black;" title="검은색"></i> 100개</div>
+	        <form action="{% url 'core:buySwordOfGod' %}" method="POST">
+	          {% csrf_token %}
+	          <input type="number" class="input-number" name="count" min="1">
+	          <button type="submit" class="item-buy-btn">구입</button>
+	        </form>
+	      </div>
+	      <div class="description" style="background: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);">
+	        <div class="icon"><i class="fas fa-info-circle"></i></div>
+	        <div class="contents">
+	          <h2 class="god-item">모든 것을 자르는 검</h2>
+	          <p>Lorem ipsum dolor sit amet,
+	            consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	            es, harum eaque dolorem eos,
+	          </p>
+	        </div>
+	      </div>
+	    </div>
+	    {% endif %}
+		{% else %}
+	  {% endif %}
+	</div>
+	<br><br>
+
+	<h2 class="shop-subheading">증서</h2>
+	<div class="carousel owl-carousel">
+	  {% if jprofile.department == 'MSIT' %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="far fa-moon"></i>
+	    </div>
+	    <div class="certificate-details">
+	      <div class="textContent">
+	        <h3 class="certificate-name">공조 증서</h3>
+	      </div>
+	      <div class="certificate-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp3개
+	      </div>
+	      <form action="{% url 'core:buyMSIT' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(135deg,#ff99ff 0%,#99ffff 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>공조 증서</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+	    {% if jprofile.position == '공조판서' %}
+	    <div class="card">
+	      <div class="item-iconBox">
+	        <i class="fas fa-umbrella"></i>
+	      </div>
+	      <div class="certificate-details">
+	        <div class="textContent">
+	          <h3 class="certificate-name">의정부 증서</h3>
+	        </div>
+	        <div class="certificate-price">
+	          <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp3개
+	        </div>
+	        <form action="{% url 'core:buyOPC' %}" method="POST">
+	          {% csrf_token %}
+	          <input type="number" class="input-number" name="count" min="1">
+	          <button type="submit" class="item-buy-btn">구입</button>
+	        </form>
+	      </div>
+	      <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	        <div class="icon"><i class="fas fa-info-circle"></i></div>
+	        <div class="contents">
+	          <h2>의정부 증서</h2>
+	          <p>Lorem ipsum dolor sit amet,
+	            consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	            es, harum eaque dolorem eos,
+	          </p>
+	        </div>
+	      </div>
+	    </div>
+	    {% endif %}
+
+	  {% elif jprofile.department == 'MPM' %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-chess"></i>
+	    </div>
+	    <div class="certificate-details">
+	      <div class="textContent">
+	        <h3 class="certificate-name">이조 증서</h3>
+	      </div>
+	      <div class="certificate-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp3개
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp1개
+	      </div>
+	      <form action="{% url 'core:buyMPM' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(-235deg, #fa709a 0%, #fee140 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>이조 증서</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+	    {% if jprofile.position == '이조판서' %}
+	    <div class="card">
+	      <div class="item-iconBox">
+	        <i class="fas fa-umbrella"></i>
+	      </div>
+	      <div class="certificate-details">
+	        <div class="textContent">
+	          <h3 class="certificate-name">의정부 증서</h3>
+	        </div>
+	        <div class="certificate-price">
+	          <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp3개
+	        </div>
+	        <form action="{% url 'core:buyOPC' %}" method="POST">
+	          {% csrf_token %}
+	          <input type="number" class="input-number" name="count" min="1">
+	          <button type="submit" class="item-buy-btn">구입</button>
+	        </form>
+	      </div>
+	      <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	        <div class="icon"><i class="fas fa-info-circle"></i></div>
+	        <div class="contents">
+	          <h2>의정부 증서</h2>
+	          <p>Lorem ipsum dolor sit amet,
+	            consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	            es, harum eaque dolorem eos,
+	          </p>
+	        </div>
+	      </div>
+	    </div>
+	    {% endif %}
+
+	  {% elif jprofile.department == 'BAI' %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-mitten"></i>
+	    </div>
+	    <div class="certificate-details">
+	      <div class="textContent">
+	        <h3 class="certificate-name">사간원 증서</h3>
+	      </div>
+	      <div class="certificate-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp2개
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp2개
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp1개
+	      </div>
+	      <form action="{% url 'core:buyBAI' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(to right, #f83600 0%, #f9d423 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>사간원 증서</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+	    {% if jprofile.position == '대사간' %}
+	    <div class="card">
+	      <div class="item-iconBox">
+	        <i class="fas fa-umbrella"></i>
+	      </div>
+	      <div class="certificate-details">
+	        <div class="textContent">
+	          <h3 class="certificate-name">의정부 증서</h3>
+	        </div>
+	        <div class="certificate-price">
+	          <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp3개
+	        </div>
+	        <form action="{% url 'core:buyOPC' %}" method="POST">
+	          {% csrf_token %}
+	          <input type="number" class="input-number" name="count" min="1">
+	          <button type="submit" class="item-buy-btn">구입</button>
+	        </form>
+	      </div>
+	      <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	        <div class="icon"><i class="fas fa-info-circle"></i></div>
+	        <div class="contents">
+	          <h2>의정부 증서</h2>
+	          <p>Lorem ipsum dolor sit amet,
+	            consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	            es, harum eaque dolorem eos,
+	          </p>
+	        </div>
+	      </div>
+	    </div>
+	    {% endif %}
+
+	  {% elif jprofile.department == 'SPO' %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-crow"></i>
+	    </div>
+	    <div class="certificate-details">
+	      <div class="textContent">
+	        <h3 class="certificate-name">사헌부 증서</h3>
+	      </div>
+	      <div class="certificate-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp3개
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp1개
+	      </div>
+	      <form action="{% url 'core:buySPO' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit"class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(235deg,#9900ff 0%, #ff1a1a 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>사헌부 증서</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+	    {% if jprofile.position == '대사헌' %}
+	    <div class="card">
+	      <div class="item-iconBox">
+	        <i class="fas fa-umbrella"></i>
+	      </div>
+	      <div class="certificate-details">
+	        <div class="textContent">
+	          <h3 class="certificate-name">의정부 증서</h3>
+	        </div>
+	        <div class="certificate-price">
+	          <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp3개
+	        </div>
+	        <form action="{% url 'core:buyOPC' %}" method="POST">
+	          {% csrf_token %}
+	          <input type="number" class="input-number" name="count" min="1">
+	          <button type="submit" class="item-buy-btn">구입</button>
+	        </form>
+	      </div>
+	      <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	        <div class="icon"><i class="fas fa-info-circle"></i></div>
+	        <div class="contents">
+	          <h2>의정부 증서</h2>
+	          <p>Lorem ipsum dolor sit amet,
+	            consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	            es, harum eaque dolorem eos,
+	          </p>
+	        </div>
+	      </div>
+	    </div>
+	    {% endif %}
+
+	  {% elif jprofile.department == 'NPA' %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-feather-alt"></i>
+	    </div>
+	    <div class="certificate-details">
+	      <div class="textContent">
+	        <h3 class="certificate-name">의금부 증서</h3>
+	      </div>
+	      <div class="certificate-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp2개
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp1개
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp2개
+	      </div>
+	      <form action="{% url 'core:buyNPA' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(235deg,#6e1aff 0%, #2597f4 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>의금부 증서</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+	    {% if jprofile.position == '판사' %}
+	    <div class="card">
+	      <div class="item-iconBox">
+	        <i class="fas fa-umbrella"></i>
+	      </div>
+	      <div class="certificate-details">
+	        <div class="textContent">
+	          <h3 class="certificate-name">의정부 증서</h3>
+	        </div>
+	        <div class="certificate-price">
+	          <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp3개
+	          <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp3개
+	        </div>
+	        <form action="{% url 'core:buyOPC' %}" method="POST">
+	          {% csrf_token %}
+	          <input type="number" class="input-number" name="count" min="1">
+	          <button type="submit" class="item-buy-btn">구입</button>
+	        </form>
+	      </div>
+	      <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	        <div class="icon"><i class="fas fa-info-circle"></i></div>
+	        <div class="contents">
+	          <h2>의정부 증서</h2>
+	          <p>Lorem ipsum dolor sit amet,
+	            consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	            es, harum eaque dolorem eos,
+	          </p>
+	        </div>
+	      </div>
+	    </div>
+	    {% endif %}
+
+	  {% elif jprofile.department == '의정부' %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-umbrella"></i>
+	    </div>
+	    <div class="certificate-details">
+	      <div class="textContent">
+	        <h3 class="certificate-name">의정부 증서</h3>
+	      </div>
+	      <div class="certificate-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp3개
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp3개
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp3개
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp3개
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp3개
+	      </div>
+	      <form action="{% url 'core:buyOPC' %}" method="POST">
+	        {% csrf_token %}
+	        <input type="number" class="input-number" name="count" min="1">
+	        <button type="submit"class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>의정부 증서</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+		{% else %}
+	  {% endif %}
+	</div>
+	<br><br>
+
+	<h2 class="shop-subheading">키</h2>
+	<div class="carousel owl-carousel">
+	  {% if jprofile.department == 'MSIT' %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span style="font-size:1rem;" class="key-icon-name">Alpha1</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Alpha1 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;4개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;4개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;12개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyMSITfirstkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(135deg,#ff99ff 0%,#99ffff 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Alpha1 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Alpha2</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Alpha2 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;8개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;8개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;24개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyMSITsecondkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(135deg,#ff99ff 0%,#99ffff 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Alpha2 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Alpha3</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Alpha3 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;16개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;16개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;48개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyMSITthirdkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(135deg,#ff99ff 0%,#99ffff 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Alpha3 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Alpha4</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Alpha4 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;32개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;32개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;96개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyMSITfourthkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(135deg,#ff99ff 0%,#99ffff 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Alpha4 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Alpha5</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Alpha5 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;64개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;64개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;192개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyMSITfifthkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(135deg,#ff99ff 0%,#99ffff 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Alpha5 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Omega1</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Omega1 Key</h3>
+	      </div>
+	      <div class="keyitem-price" >
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;15&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyOPCfirstkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Omega1 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  {% elif jprofile.department == 'MPM' %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Delta1</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Delta1 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;3개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;9개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;3개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyMPMfirstkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(-235deg, #fa709a 0%, #fee140 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Delta1 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Delta2</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Delta2 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;6개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;18개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;6개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyMPMsecondkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(-235deg, #fa709a 0%, #fee140 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Delta2 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Delta3</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Delta3 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;12개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;36개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;12개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyMPMthirdkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(-235deg, #fa709a 0%, #fee140 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Delta3 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Delta4</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Delta4 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;24개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;72개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;24개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyMPMfourthkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(-235deg, #fa709a 0%, #fee140 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Delta4 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Delta5</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Delta5 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;48개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;144개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;48개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyMPMfifthkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(-235deg, #fa709a 0%, #fee140 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Delta5 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Omega1</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Omega1 Key</h3>
+	      </div>
+	      <div class="keyitem-price" >
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;15&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyOPCfirstkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Omega1 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  {% elif jprofile.department == 'BAI' %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Epsilon1</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Epsilon1 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;5&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;5&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;10&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;10&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;5&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyBAIfirstkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(to right, #f83600 0%, #f9d423 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Epsilon1 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Epsilon2</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Epsilon2 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;10&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;10&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;20&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;20&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;10&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyBAIsecondkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(to right, #f83600 0%, #f9d423 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Epsilon2 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Epsilon3</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Epsilon3 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;20&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;20&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;40&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;40&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;20&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyBAIthirdkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(to right, #f83600 0%, #f9d423 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Epsilon3 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Epsilon4</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Epsilon4 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;40&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;40&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;80&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;80&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;40&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyBAIfourthkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(to right, #f83600 0%, #f9d423 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Epsilon4 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Omega1</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Omega1 Key</h3>
+	      </div>
+	      <div class="keyitem-price" >
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;15&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyOPCfirstkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Omega1 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+		{% elif jprofile.department == 'SPO' %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Beta1</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Beta1 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;9개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;3개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;3개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buySPOfirstkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(235deg,#9900ff 0%, #ff1a1a 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Beta1 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Beta2</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Beta2 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;18개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;6개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;6개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buySPOsecondkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(235deg,#9900ff 0%, #ff1a1a 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Beta2 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Beta3</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Beta3 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;36개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;12개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;12개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buySPOthirdkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(235deg,#9900ff 0%, #ff1a1a 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Beta3 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Beta4</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Beta4 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;72개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;24개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;24개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buySPOfourthkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(235deg,#9900ff 0%, #ff1a1a 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Beta4 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Beta5</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Beta5 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;144개&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;48개&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;48개&nbsp;
+	      </div>
+	      <form action="{% url 'core:buySPOfifthkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(235deg,#9900ff 0%, #ff1a1a 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Beta5 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Omega1</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Omega1 Key</h3>
+	      </div>
+	      <div class="keyitem-price" >
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;15&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyOPCfirstkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Omega1 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  {% elif jprofile.department == 'NPA' %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Gamma1</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Gamma1 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;2&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;2&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;4&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;2&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;4&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyNPAfirstkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(235deg,#6e1aff 0%, #2597f4 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Gamma1 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Gamma2</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Gamma2 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;4&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;4&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;8&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;4&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;8&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyNPAsecondkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(235deg,#6e1aff 0%, #2597f4 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Gamma2 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Gamma3</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Gamma3 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;8&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;8&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;16&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;8&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;16&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyNPAthirdkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(235deg,#6e1aff 0%, #2597f4 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Gamma3 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Gamma4</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Gamma4 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;16&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;16&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;32&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;16&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;32&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyNPAfourthkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(235deg,#6e1aff 0%, #2597f4 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Gamma4 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Gamma5</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Gamma5 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;32&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;32&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;64&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;32&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;64&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyNPAfifthkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background:linear-gradient(235deg,#6e1aff 0%, #2597f4 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Gamma5 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Omega3</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Omega3 Key</h3>
+	      </div>
+	      <div class="keyitem-price" >
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;30&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;30&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;30&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;30&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;30&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyOPCthirdkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Omega3 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  {% elif jprofile.department == '의정부' %}
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Omega2</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Omega2 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;15&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;15&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyOPCsecondkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Omega2 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Omega3</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Omega3 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;30&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;30&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;30&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;30&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;30&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyOPCthirdkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Omega3 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Omega4</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Omega4 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;30&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;30&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;30&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;30&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;30&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyOPCfourthkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Omega4 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Omega5</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Omega5 Key</h3>
+	      </div>
+	      <div class="keyitem-price">
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;60&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;60&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;60&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;60&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;60&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyOPCfifthkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Omega5 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Omega6</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Omega6 Key</h3>
+	      </div>
+	      <div class="keyitem-price" >
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;60&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;60&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;60&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;60&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;60&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyOPCsixthkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Omega6 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Omega7</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Omega7 Key</h3>
+	      </div>
+	      <div class="keyitem-price" >
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;60&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;60&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;60&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;60&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;60&nbsp;
+	      </div>
+	      <form action="{% url 'core:buyOPCseventhkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Omega7 Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="card">
+	    <div class="item-iconBox">
+	      <i class="fas fa-key"><span class="key-icon-name">Ranker</span></i>
+	    </div>
+	    <div class="keyitem-details">
+	      <div class="textContent">
+	        <h3 class="keyitem-name">Ranker Key</h3>
+	      </div>
+	      <div class="keyitem-price" >
+	        <i class="fas fa-coins" style="color: #4d4dff" title="파란색"></i>&nbsp;50&nbsp;
+	        <i class="fas fa-coins" style="color: #1aff1a" title="초록색"></i>&nbsp;50&nbsp;
+	        <i class="fas fa-coins" style="color: #ff944d" title="주황색"></i>&nbsp;50&nbsp;
+	        <i class="fas fa-coins" style="color: #ff0066" title="분홍색"></i>&nbsp;50&nbsp;
+	        <i class="fas fa-coins" style="color: #bf40bf" title="보라색"></i>&nbsp;50&nbsp;
+	      </div>
+	      <form action="{% url 'core:buySSkey' %}" method="POST">
+	        {% csrf_token %}
+	        <button type="submit" class="item-buy-btn">구입</button>
+	      </form>
+	    </div>
+	    <div class="description" style="background: linear-gradient(to top, #96fbc4 0%, #f9f586 100%);">
+	      <div class="icon"><i class="fas fa-info-circle"></i></div>
+	      <div class="contents">
+	        <h2>Ranker Key</h2>
+	        <p>Lorem ipsum dolor sit amet,
+	          consectetur adipisicing elit. Animi quidem ea doloribus unde dolor
+	          es, harum eaque dolorem eos,
+	        </p>
+	      </div>
+	    </div>
+	  </div>
+	  {% else %}
+	  {% endif %}
+	</div>
+	<br><br>
+	{% endif %}
+</div>
+<br><br>
+{% endblock content %}

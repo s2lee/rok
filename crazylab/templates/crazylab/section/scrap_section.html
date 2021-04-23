@@ -1,0 +1,19 @@
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<form action="{% url 'crazylab:scrap' %}" method="POST">
+  {% csrf_token %}
+  {% if request.user in post.scrap.all %}
+    <button type="submit" id="scrap" value="{{ post.id }}" class="joseon_detail_btn">
+			<span style="color:#009900" title="스크랩"><i class="far fa-bookmark"></i></span>
+		</button>
+		<span class="joseon_detail-btn-count" style="color:#009900">{{ get_total_scrap }}</span>
+  {% else %}
+    <button type="submit" id="scrap" value="{{ post.id }}" class="joseon_detail_btn">
+			<span title="스크랩"><i class="far fa-bookmark"></i></span>
+		</button>
+		<span class="joseon_detail-btn-count">{{ get_total_scrap }}</span>
+  {% endif %}
+</form>

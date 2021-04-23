@@ -1,0 +1,19 @@
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<form action="{% url 'crazylab:up_comment' %}" method='POST'>
+  {% csrf_token %}
+	{% if request.user in comment.up.all %}
+    <button type="submit" class="comment_up joseon_detail_comment_btn" value1="{{ comment.id }}" value2="comment" style="margin:0;">
+			<span style="color:#ff0000;"><i class="fas fa-long-arrow-alt-up"></i></span>
+		</button>
+		<span class="joseon_detail_comment-btn-count" style="color:#ff0000;">{{ comment.up.all.count }}</span>
+  {% else %}
+    <button type="submit" class="comment_up joseon_detail_comment_btn" value1="{{ comment.id }}" value2="comment" style="margin:0;">
+			<span><i class="fas fa-long-arrow-alt-up"></i></span>
+		</button>
+		<span class="joseon_detail_comment-btn-count">{{ comment.up.all.count }}</span>
+  {% endif %}
+</form>

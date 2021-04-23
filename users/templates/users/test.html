@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>The Rank of Korea</title>
+  <script src="https://kit.fontawesome.com/64d58efce2.js"  crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <link rel="shortcut icon" href="{% static 'favicon.png' %}">
+</head>
+<body style="padding-top:20px">
+<form action="" class="register-form" method="POST">
+  {% csrf_token %}
+  <div class="register-form__content">
+    <h1>The Rank of Korea</h1>
+    <div class="register__contents-group">
+      <label for="" class="label">아이디</label>
+      <input type="text" class="register-form__input" name="username" placeholder="아이디" autofocus required>
+    </div>
+    <div class="register__contents-group">
+      <label for="" class="label">비밀번호</label>
+      <input type="password" class="register-form__input" name="password1" placeholder="비밀번호" required>
+    </div>
+    <div class="register__contents-group">
+      <label for="" class="label">비밀번호 재확인</label>
+      <input type="password" class="register-form__input" name="password2" placeholder="비밀번호 재확인" required>
+    </div>
+    <div class="register__contents-group">
+      <label for="" class="label">닉네임</label>
+      <input type="text" class="register-form__input" name="nickname" placeholder="수정이 불가능하니 신중하게 입력해주세요" required>
+    </div>
+    <div class="register__contents-group">
+      <label for="" class="label">꿈</label>
+      <input type="text" class="register-form__input" name="dream" placeholder="소중한 꿈 한 개만 입력하세요" required>
+    </div>
+    <div class="register__contents-group">
+      <label for="" class="label">취미</label>
+      <input type="text" class="register-form__input" name="hobby" placeholder="취미를 입력하세요" required>
+    </div>
+    <div class="register__contents-group">
+      <label for="" class="label">관심사</label>
+      <input type="text" class="register-form__input" name="interest" placeholder="최근 관심사를 입력하세요" required>
+    </div>
+    <div class="register__contents-group">
+        <label for="" class="label">정치성향</label>
+        <div class="radio-container">
+          <div class="radio">
+            <input type="radio" name="political_orientation" id="progressivism">
+            <label for="progressivism" class="political_orientation-label">진보</label>
+          </div>
+          <div class="radio">
+            <input type="radio" name="political_orientation" id="centrism">
+            <label for="centrism" class="political_orientation-label">중도/선택안함</label>
+          </div>
+          <div class="radio">
+            <input type="radio" name="political_orientation" id="conservatism">
+            <label for="conservatism" class="political_orientation-label">보수</label>
+          </div>
+        </div>
+
+    </div>
+    <input type="submit" class="register-form__btn" value="가입하기">
+  </div>
+</form>
+</body>
+
+</html>

@@ -1,0 +1,11 @@
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<form action="{% url 'joseon:impeached' %}" method="POST">
+  {% csrf_token %}
+    <button type="submit" id="impeached" value1="{{post.author.id}}" value2="post" class="joseon_detail_author_btn">
+			<span><i class="fas fa-balance-scale" title="탄핵권"></i></span>
+		</button>
+</form>

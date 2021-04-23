@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load reality_tags %}
+{% block content %}
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<div class='row'>
+  <div class="col"></div>
+  <div class="col-12 col-xl-8 col-md-8">
+    <form method="POST">
+      {% csrf_token %}
+    	{{ form.as_p }}
+			{% if request.user|has_group:"Accused" %}
+				<input type="submit" value="등록" disabled>
+			{% else %}
+				<input type="submit" value="등록" onclick="this.disabled=true,this.form.submit();">
+			{% endif %}
+    </form>
+  </div>
+  <div class="col"></div>
+</div>
+{% endblock%}

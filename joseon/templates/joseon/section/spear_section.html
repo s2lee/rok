@@ -1,0 +1,20 @@
+{% load static %}
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<form action="{% url 'joseon:add_spear' %}" method='POST'>
+  {% csrf_token %}
+  {% if request.user in post.spear.all %}
+    <button type="submit" id="spear" value="{{ post.id }}" class="joseon_detail_btn">
+			<img src="{% static 'images/spear-red.png' %}" alt="" title="창">
+		</button>
+		<span class="joseon_detail-btn-count" style="color:#ff0000;">{{ get_total_spear }}</span>
+  {% else %}
+    <button type="submit" id="spear" value="{{ post.id }}" class="joseon_detail_btn">
+			<img src="{% static 'images/spear-detail.png' %}" alt="" title="창">
+		</button>
+		<span class="joseon_detail-btn-count">{{ get_total_spear }}</span>
+  {% endif %}
+</form>

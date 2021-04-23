@@ -1,0 +1,210 @@
+{% load reality_tags %}
+댓글 수 : {{ comment_all.count }}
+
+{% if request.user.is_authenticated and not request.user|has_group:"Accused" %}
+<div>
+  <div class="form-group" style="border:1px solid;">
+    <form method="post" class="comment-form">
+      {% csrf_token %}
+      <input type="text" name="contents" required>
+      <input type="submit" value="댓글등록">
+    </form>
+  </div>
+</div>
+
+<br>
+{% for top in comment_top %}
+	{% if top.total >= 1 %}
+		<blockquote style="border:1px solid orange;">
+      <footer>
+        {% if  top.author == post.author %}
+          <a href="{% url 'get_user_profile' top.author.profile.nickname %}">{{ top.author.profile.nickname }}(글쓴이)</a> |
+          {% if top.is_recent %}
+            {{ top.created_date|timesince }} 전
+          {% else %}
+            {{  top.created_date|date:'y.m.d g:i a' }}
+          {% endif %}
+        {% else %}
+          <a href="{% url 'get_user_profile' top.author.profile.nickname %}">{{  top.author.profile.nickname }}</a> |
+          {% if top.is_recent %}
+            {{ top.created_date|timesince }} 전
+          {% else %}
+            {{  top.created_date|date:'y.m.d g:i a' }}
+          {% endif %}
+        {% endif %}
+      </footer>
+      <p>{{ top.contents }}</p>
+      <div class="top-up-section-{{top.id}}">
+        {% include 'reality/section/top_up_section.html' %}
+      </div>
+      <div class="top-accuse-section-{{top.id}}">
+        {% include 'reality/section/top_accuse_section.html' %}
+      </div>
+		</blockquote>
+	{% endif %}
+{% endfor %}
+<br>
+
+{% for comment in comments %}
+  <blockquote style="border:1px solid blue;">
+    <footer>
+      {% if comment.author == post.author %}
+        <a href="{% url 'get_user_profile' comment.author.profile.nickname %}">{{ comment.author.profile.nickname }}(글쓴이)</a> |
+        {% if comment.is_recent %}
+          {{ comment.created_date|timesince }} 전
+        {% else %}
+          {{  comment.created_date|date:'y.m.d g:i a' }}
+        {% endif %}
+      {% else %}
+        <a href="{% url 'get_user_profile' comment.author.profile.nickname %}">{{ comment.author.profile.nickname }}</a> |
+        {% if comment.is_recent %}
+          {{ comment.created_date|timesince }} 전
+        {% else %}
+          {{  comment.created_date|date:'y.m.d g:i a' }}
+        {% endif %}
+      {% endif %}
+    </footer>
+    <p>{{ comment.contents }}</p>
+    <div class="comment-up-section-{{comment.id}}">
+      {% include 'reality/section/comment_up_section.html' %}
+    </div>
+    <div class="comment-accuse-section-{{comment.id}}">
+      {% include 'reality/section/comment_accuse_section.html' %}
+    </div>
+    <button type="button" name="button" class="reply-btn" >답글</button>
+    <div class="reply-form-group" style="display:none;">
+      <form method="post" class="reply-form" >
+        {% csrf_token %}
+        <input type="hidden" name="comment_id" value="{{ comment.id }}">
+        <input type="text" name="contents" required>
+        <input type="submit" value="답글" >
+      </form>
+    </div>
+  </blockquote>
+
+  <div class="replied-comment">
+    {% for reply in comment.replies.all %}
+    <blockquote style="border-bottom:1px solid red;margin-left:80px;">
+      <footer>
+        {% if reply.author == post.author %}
+          <a href="{% url 'get_user_profile' reply.author.profile.nickname %}">{{ reply.author.profile.nickname }}(글쓴이)</a> |
+          {% if reply.is_recent %}
+            {{ reply.created_date|timesince }} 전
+          {% else %}
+            {{  reply.created_date|date:'y.m.d g:i a' }}
+          {% endif %}
+        {% else %}
+          <a href="{% url 'get_user_profile' reply.author.profile.nickname %}">{{ reply.author.profile.nickname }}</a> |
+          {% if reply.is_recent %}
+            {{ reply.created_date|timesince }} 전
+          {% else %}
+            {{  reply.created_date|date:'y.m.d g:i a' }}
+          {% endif %}
+        {% endif %}
+      </footer>
+      <p>{{ reply.contents }}</p>
+      <div class="reply-up-section-{{reply.id}}">
+        {% include 'reality/section/reply_up_section.html' %}
+      </div>
+      <div class="reply-accuse-section-{{reply.id}}">
+        {% include 'reality/section/reply_accuse_section.html' %}
+      </div>
+    </blockquote>
+    {% endfor %}
+  </div>
+{% endfor %}
+
+{% else %}
+<br>
+{% for top in comment_top %}
+	{% if top.total >= 1 %}
+		<blockquote style="border:1px solid orange;">
+      <footer>
+        {% if  top.author == post.author %}
+          <a href="{% url 'get_user_profile' top.author.profile.nickname %}">{{ top.author.profile.nickname }}(글쓴이)</a> |
+          {% if top.is_recent %}
+            {{ top.created_date|timesince }} 전
+          {% else %}
+            {{  top.created_date|date:'y.m.d g:i a' }}
+          {% endif %}
+        {% else %}
+          <a href="{% url 'get_user_profile' top.author.profile.nickname %}">{{  top.author.profile.nickname }}</a> |
+          {% if top.is_recent %}
+            {{ top.created_date|timesince }} 전
+          {% else %}
+            {{  top.created_date|date:'y.m.d g:i a' }}
+          {% endif %}
+        {% endif %}
+      </footer>
+      <p>{{ top.contents }}</p>
+      <div class="top-up-section-{{top.id}}">
+        {% include 'reality/section/top_up_section.html' %}
+      </div>
+      <div class="top-accuse-section-{{top.id}}">
+        {% include 'reality/section/top_accuse_section.html' %}
+      </div>
+		</blockquote>
+	{% endif %}
+{% endfor %}
+<br>
+
+{% for comment in comments %}
+  <blockquote style="border:1px solid blue;">
+    <footer>
+      {% if comment.author == post.author %}
+        <a href="{% url 'get_user_profile' comment.author.profile.nickname %}">{{ comment.author.profile.nickname }}(글쓴이)</a> |
+        {% if comment.is_recent %}
+          {{ comment.created_date|timesince }} 전
+        {% else %}
+          {{  comment.created_date|date:'y.m.d g:i a' }}
+        {% endif %}
+      {% else %}
+        <a href="{% url 'get_user_profile' comment.author.profile.nickname %}">{{ comment.author.profile.nickname }}</a> |
+        {% if comment.is_recent %}
+          {{ comment.created_date|timesince }} 전
+        {% else %}
+          {{  comment.created_date|date:'y.m.d g:i a' }}
+        {% endif %}
+      {% endif %}
+    </footer>
+    <p>{{ comment.contents }}</p>
+    <div class="comment-up-section-{{comment.id}}">
+      {% include 'reality/section/comment_up_section.html' %}
+    </div>
+    <div class="comment-accuse-section-{{comment.id}}">
+      {% include 'reality/section/comment_accuse_section.html' %}
+    </div>
+  </blockquote>
+
+  <div class="replied-comment">
+    {% for reply in comment.replies.all %}
+    <blockquote style="border-bottom:1px solid red;margin-left:80px;">
+      <footer>
+        {% if reply.author == post.author %}
+          <a href="{% url 'get_user_profile' reply.author.profile.nickname %}">{{ reply.author.profile.nickname }}(글쓴이)</a> |
+          {% if reply.is_recent %}
+            {{ reply.created_date|timesince }} 전
+          {% else %}
+            {{  reply.created_date|date:'y.m.d g:i a' }}
+          {% endif %}
+        {% else %}
+          <a href="{% url 'get_user_profile' reply.author.profile.nickname %}">{{ reply.author.profile.nickname }}</a> |
+          {% if reply.is_recent %}
+            {{ reply.created_date|timesince }} 전
+          {% else %}
+            {{  reply.created_date|date:'y.m.d g:i a' }}
+          {% endif %}
+        {% endif %}
+      </footer>
+      <p>{{ reply.contents }}</p>
+      <div class="reply-up-section-{{reply.id}}">
+        {% include 'reality/section/reply_up_section.html' %}
+      </div>
+      <div class="reply-accuse-section-{{reply.id}}">
+        {% include 'reality/section/reply_accuse_section.html' %}
+      </div>
+    </blockquote>
+    {% endfor %}
+  </div>
+{% endfor %}
+{% endif %}

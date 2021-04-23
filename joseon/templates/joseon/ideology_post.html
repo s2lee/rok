@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load joseon_tags %}
+{% block content %}
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<div class="main-contents-container">
+	<div class="joseon-post-container">
+	  <form action="{% url 'joseon:post_ideology' %}" method="POST" >
+	    {% csrf_token %}
+			<label for="" class="label">제목</label>
+	    <input type="text" class="joseon_post_title_input" name="title" maxlength="50" placeholder="글자제한은 50자입니다." autofocus required autocomplete="off">
+			<label for="" class="label">내용</label>
+			<textarea name="contents" cols="30" rows="10" class="joseon_post_contents_input"  maxlength="1400" placeholder="글자제한은 1400자입니다." required></textarea>
+			{% if request.user|has_group:"Joseon_Accused" %}
+				<input type="submit" value="입력" class="joseon_post_btn" disabled>
+			{% else %}
+				<input type="submit" value="입력" class="joseon_post_btn" onclick="this.disabled=true,this.form.submit();">
+			{% endif %}
+	  </form>
+	</div>
+</div>
+{% endblock%}

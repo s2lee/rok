@@ -1,0 +1,11 @@
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<form action="{% url 'crazylab:accuse_post' %}" method="POST">
+  {% csrf_token %}
+    <button type="submit" id="accuse" value1="{{post.id}}" value2="{{post.author.id}}" class="joseon_detail_btn">
+			<span style="color:black;" title="신고"><i class="fas fa-bullhorn"></i></span>
+		</button>
+</form>

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="main-contents-container">
+  <div class="login-form-error">
+    <span>{{ form.non_field_errors }}</span>
+  </div>
+  <form class="login-form" method="POST">
+    {% csrf_token %}
+    <div class="login-form__content">
+      <div class="login-form__header">Sign in</div>
+      <input class="login-form__input" type="text"  name="username" placeholder="아이디" autocomplete="off" autofocus>
+      <input class="login-form__input" type="password"  name="password" placeholder="비밀번호">
+      <button class="login-form__btn" type="submit">Sign in</button>
+      <div class="login-form__links">
+        <span>계정이 없으신가요? </span><a href="{% url 'register_confirm' %}" class="login-form__link">회원가입</a>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock content %}

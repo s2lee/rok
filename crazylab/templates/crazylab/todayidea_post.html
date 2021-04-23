@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crazylab_tags %}
+{% block content %}
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<div class="main-contents-container">
+	<div class="joseon-post-container">
+    <form method="POST">
+      {% csrf_token %}
+    	{{ form }}
+			{% if request.user|has_group:"Accused" %}
+				<input type="submit" value="입력" class="joseon_post_btn" disabled>
+			{% else %}
+				<input type="submit" value="입력" class="joseon_post_btn" onclick="this.disabled=true,this.form.submit();">
+			{% endif %}
+    </form>
+	</div>
+	</div>
+{% endblock%}

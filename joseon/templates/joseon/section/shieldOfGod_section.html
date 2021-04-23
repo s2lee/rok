@@ -1,0 +1,18 @@
+{% load static%}
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<form action="{% url 'joseon:add_shieldOfGod'  %}" method="POST">
+  {% csrf_token %}
+  {% if request.user in post.shieldOfGod.all %}
+    <button type="submit" id="shieldOfGod" value="{{ post.id }}" class="joseon_detail_btn_god">
+			<img  src="{% static 'images/shieldofgod-blue.png' %}" alt="" title="모든 것을 막는 방패">
+		</button>
+  {% else %}
+    <button type="submit" id="shieldOfGod" value="{{ post.id }}" class="joseon_detail_btn_god">
+			<img src="{% static 'images/shieldofgod-detail.png' %}" alt="" title="모든 것을 막는 방패" >
+		</button>
+  {% endif %}
+</form>

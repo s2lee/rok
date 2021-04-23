@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% for user in ranker %}
+<h3>랭커 {{ user.nickname }}가 작성한 글</h3>
+{% endfor %}
+{% for post in posts %}
+      <div style="border:1px solid;">
+        <h4>제목 : <a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h4>
+        <div class="article-metadata">
+          <small>{{ post.anonymous }}</small>
+          <small>{{ post.date_posted|date:"y.m.d"  }}</small>
+        </div>
+        <p class="article-content">{{ post.contents }}</p>
+      </div>
+{% endfor %}
+{% endblock%}

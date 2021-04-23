@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>The Rank of Korea</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <link rel="shortcut icon" href="{% static 'favicon.png' %}">
+  <script src="https://kit.fontawesome.com/64d58efce2.js"  crossorigin="anonymous"></script>
+</head>
+<body>
+  {% include 'top.html' %}
+  <header>
+    <div class="logo-container">
+      <h1 class="logo"><a href="{% url 'core:home' %}">The Rank of Korea</a></h1>
+      <div class="user-nav-links">
+        <ul>
+          {% if user.is_authenticated %}
+          <li class="user-nav-link">
+            <a href="" class="username">
+              {{ user.profile.nickname }}<i class="fas fa-caret-down"></i>
+            </a>
+            <div class="user-dropdown">
+              <ul>
+                <li class="user-dropdown-link">
+                  <a href="{% url 'profile' %}">프로필</a>
+                </li>
+                <li class="user-dropdown-link">
+                  <a href="{% url 'jprofile' %}">조선프로필</a>
+                </li>
+                <li class="user-dropdown-link">
+                  <a href="{% url 'inventory' %}">인벤토리</a>
+                </li>
+                <li class="user-dropdown-link">
+                  <a href="{% url 'core:shop' %}">상점</a>
+                </li>
+                <li class="user-dropdown-link">
+                  <a href="{% url 'view_scrap' %}">스크랩</a>
+                </li>
+                <li class="user-dropdown-link">
+                  <a href="{% url 'HowToPlay' %}">플레이방법</a>
+                </li>
+                <li class="user-dropdown-link">
+                  <a href="{% url 'logout' %}">로그아웃</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          {% else %}
+          <li>
+            <a href="{% url 'login' %}">로그인</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+
+    <div class="container">
+      <input type="checkbox" id="check" onclick="checkbox1();">
+      <input type="checkbox" id="customer-check" onclick="checkbox2();">
+
+      <div class="hamburger-menu-container">
+        <div class="hamburger-menu">
+          <div>
+          </div>
+        </div>
+      </div>
+
+      <div class="logo-mobile-container">
+        <h3 class="logo-mobile"><a href="{% url 'core:home' %}">The Rank of Korea</a></h3>
+      </div>
+
+      <div class="customer-menu-container">
+        <div class="customer-menu">
+          <a href=""><i class="fas fa-user"></i></a>
+        </div>
+      </div>
+
+      {% include 'navbar.html' %}
+
+      <div class="customer-nav-btn">
+        <div class="customer-nav-links">
+          <ul>
+            {% if user.is_authenticated %}
+              <li class="customer-nav-link">
+                <a href="{% url 'profile' %}">프로필</a>
+              </li>
+              <li class="customer-nav-link">
+                <a href="{% url 'jprofile' %}">조선프로필</a>
+              </li>
+              <li class="customer-nav-link">
+                <a href="{% url 'inventory' %}">인벤토리</a>
+              </li>
+              <li class="customer-nav-link">
+                <a href="{% url 'core:shop' %}">상점</a>
+              </li>
+              <li class="customer-nav-link">
+                <a href="{% url 'view_scrap' %}">스크랩</a>
+              </li>
+              <li class="customer-nav-link">
+                <a href="{% url 'HowToPlay' %}">플레이방법</a>
+              </li>
+              <li class="customer-nav-link">
+                <a href="{% url 'logout' %}">로그아웃</a>
+              </li>
+            {% else %}
+              <li class="customer-nav-link">
+                <a href="{% url 'login' %}">로그인</a>
+              </li>
+              <li class="customer-nav-link">
+                <a href="{% url 'register_confirm' %}">회원가입</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+  {% block content %}
+  {% endblock content %}
+
+  <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+  {% block extra_scripts %}{% endblock extra_scripts %}
+  {% include 'footer.html' %}
+</body>
+</html>

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="profile-update-container">
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}    
+    <div class="profile_update__contents-group">
+      <label for="" class="label">꿈</label>
+      {{profile_update_form.dream}}
+    </div>
+    <div class="profile_update__contents-group">
+      <label for="" class="label">취미</label>
+      {{profile_update_form.hobby}}
+    </div>
+    <div class="profile_update__contents-group">
+      <label for="" class="label">관심사</label>
+      {{profile_update_form.interest}}
+    </div>
+    <div class="profile_update__contents-group">
+      <label for="" class="label">사진</label><br>
+      {{profile_update_form.image}}
+    </div>
+    <button class="edit-profile-btn" type="submit" style="margin-top:30px;">수정하기</button>
+  </form>
+</div>
+{% endblock content %}

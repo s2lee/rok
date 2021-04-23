@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<h3>편지 게시판</h3><br>
+<div style="width:100%">
+  <div class="row"  style="border:1px solid blue;float:left; padding: 10px; width: 30%; ">
+  {% for top in tops %}
+    <div class="col"></div>
+    <div class="col-12 col-xl-8 col-md-4">
+      <div class="card" style="width:18rem;">
+        <div class="card-body">
+					<h3 class="card-title">제목: <a href="{{ top.get_absolute_url }}">{{ top.title }}</a></h3>
+          <h5 class="card-title">추천수: {{ top.all_recommend }}</h5>
+          <p class="card-text">{{ top.contents }}</p>
+          <br>
+        </div>
+      </div>
+    </div>
+    <div class="col"></div>
+  {% endfor %}
+  </div>
+
+  <div class="row" style="float:right">
+    <div class = "col"></div>
+    <div class = 'col-12 col-xl-8 col-md-4'>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">제목</th>
+            <th scope="col">글쓴이</th>
+						<th scope="col">추천수</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for post in posts %}
+          <tr>
+
+            <td>
+							<a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+							{% if post.is_recent %}
+							 <small style="color:grey;"> {{ post.date_posted|timesince }} 전</small>
+							{% endif %}
+						</td>
+            <td><a href="{% url 'get_user_profile' post.author.profile.nickname %}">{{ post.author.profile.nickname }}</a></td>
+            <td>{{ post.all_recommend }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% if is_paginated %}
+
+        {% if page_obj.has_previous %}
+          <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+          <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if page_obj.number == num %}
+            <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+          {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+          <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+
+      {% endif %}
+      <br>
+      <br>
+      {% if request.user.is_authenticated %}
+      <a href="{% url 'reality:post_letter' %}" class="btn btn-primary">글쓰기</a>
+      {% endif %}
+    </div>
+    <div class='col'></div>
+  </div>
+</div>
+{% endblock %}

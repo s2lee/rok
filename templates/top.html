@@ -1,0 +1,48 @@
+{% load core_tags %}
+<div class="top">
+  <span>진보<span class="num">{{ num_progressivism }}</span>&nbsp;
+    {% if RateOfIncrease_progressivism > 0 %}
+      <span class="up">
+        {{ RateOfIncrease_progressivism }}%&nbsp;<span class="mark">▲</span>
+      </span>
+    {% elif RateOfIncrease_progressivism < 0 %}
+      <span class="down">
+        {{ RateOfIncrease_progressivism|negative }}%&nbsp;<span class="mark">▼</span>
+      </span>
+    {% else %}
+      <span class="equivalent">
+        {{ RateOfIncrease_progressivism }}%&nbsp;&nbsp;<span class="mark">-</span>
+      </span>
+    {% endif %}
+  </span>
+  <span class="center">중도<span class="num">{{ num_centrism }}</span>&nbsp;
+    {% if RateOfIncrease_centrism > 0 %}
+      <span class="up">
+        {{ RateOfIncrease_centrism }}%&nbsp;<span class="mark">▲</span>
+      </span>
+    {% elif RateOfIncrease_centrism < 0 %}
+      <span class="down">
+        {{ RateOfIncrease_centrism|negative }}%&nbsp;<span class="mark">▼</span>
+      </span>
+    {% else %}
+      <span class="equivalent">
+        {{ RateOfIncrease_centrism }}%&nbsp;&nbsp;<span class="mark">-</span>
+      </span>
+    {% endif %}
+  </span>
+  <span>보수<span class="num">{{ num_conservatism }}</span>&nbsp;
+    {% if RateOfIncrease_conservatism > 0 %}
+      <span class="up">
+        {{ RateOfIncrease_conservatism }}%&nbsp;<span class="mark">▲</span>
+      </span>
+    {% elif RateOfIncrease_conservatism < 0 %}
+      <span class="down">
+        {{ RateOfIncrease_conservatism|negative }}%&nbsp;<span class="mark">▼</span>
+      </span>
+    {% else %}
+      <span class="equivalent">
+        {{ RateOfIncrease_conservatism }}%&nbsp;&nbsp;<span class="mark">-</span>
+      </span>
+    {% endif %}
+  </span>
+</div>

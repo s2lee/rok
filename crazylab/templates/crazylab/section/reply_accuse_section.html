@@ -1,0 +1,13 @@
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+{% if request.user != reply.author %}
+<form action="{% url 'crazylab:accuse_comment' %}" method="POST">
+  {% csrf_token %}
+    <button type="submit" class="reply_accuse joseon_detail_comment_btn" value1="{{reply.id}}" value2="{{reply.author.id}}" value3="reply">
+			<span style="color:#d9d9d9" title="신고"><i class="fas fa-bullhorn"></i></span>
+		</button>
+</form>
+{% endif %}

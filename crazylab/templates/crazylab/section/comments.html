@@ -1,0 +1,243 @@
+{% load crazylab_tags %}
+{% if request.user.is_authenticated and not request.user|has_group:"Accused" %}
+<span class="comment-count">댓글</span>
+<span class="comment-count" style="color:#0080C3;">{{ comment_all.count }}</span>
+<div class="joseon-comment-form-container">
+  <form method="post" class="comment-form">
+    {% csrf_token %}
+    <textarea name="contents" class="joseon_comment_contents_input"
+      maxlength="600" placeholder="배려와 책임의 의사소통을 보여주세요."
+      required></textarea>
+    <input type="submit" value="등록" class="joseon_comment_btn">
+  </form>
+</div>
+
+{% for top in comment_top %}
+	{% if top.total >= 1 %}
+  <div class="top-comments-container">
+    <div class="comment-author">
+      {% if  top.author == post.author %}
+        <span class="best-comment">BEST</span> <a href="{% url 'get_user_profile' top.author.profile.nickname %}">{{ top.author.profile.nickname }}</a> <span style="color:#0080C3;">(글쓴이)</span>
+        {% if top.is_recent %}
+          <span class="comment-created_date">{{ top.created_date|timesince }} 전</span>
+        {% else %}
+          <span class="comment-created_date">{{  top.created_date|date:'y.m.d g:i a' }}</span>
+        {% endif %}
+      {% else %}
+        <span class="best-comment">BEST</span> <a href="{% url 'get_user_profile' top.author.profile.nickname %}">{{  top.author.profile.nickname }}</a>
+        {% if top.is_recent %}
+          <span class="comment-created_date">{{ top.created_date|timesince }} 전</span>
+        {% else %}
+          <span class="comment-created_date">{{  top.created_date|date:'y.m.d g:i a' }}</span>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="comment-contents">{{ top.contents }}</div>
+    <div class="comment-evaluation-container">
+      <div class="top-up-section-{{top.id}}">
+        {% include 'crazylab/section/top_up_section.html' %}
+      </div>
+      <div class="top-down-section-{{top.id}}">
+        {% include 'crazylab/section/top_accuse_section.html' %}
+      </div>
+    </div>
+  </div>
+	{% endif %}
+{% endfor %}
+
+{% for comment in comments %}
+  <div class="comments-container" >
+    <div class="comment-author">
+      {% if comment.author == post.author %}
+        <a href="{% url 'get_user_profile' comment.author.profile.nickname %}">{{ comment.author.profile.nickname }}</a> <span style="color:#0080C3;">(글쓴이)</span>
+        {% if comment.is_recent %}
+          <span class="comment-created_date">{{ comment.created_date|timesince }} 전</span>
+        {% else %}
+          <span class="comment-created_date">{{  comment.created_date|date:'y.m.d g:i a' }}</span>
+        {% endif %}
+      {% else %}
+        <a href="{% url 'get_user_profile' comment.author.profile.nickname %}">{{ comment.author.profile.nickname }}</a>
+        {% if comment.is_recent %}
+          <span class="comment-created_date">{{ comment.created_date|timesince }} 전</span>
+        {% else %}
+          <span class="comment-created_date">{{  comment.created_date|date:'y.m.d g:i a' }}</span>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="comment-contents">{{ comment.contents }}</div>
+    <div class="comment-evaluation-container">
+      <div class="comment-up-section-{{comment.id}}">
+        {% include 'crazylab/section/comment_up_section.html' %}
+      </div>
+      <div class="comment-down-section-{{comment.id}}">
+        {% include 'crazylab/section/comment_accuse_section.html' %}
+      </div>
+    </div>
+    <div class="reply-position">
+      <button type="button" name="button" class="reply-btn">
+        <span title="답글"><i class="fas fa-pencil-alt"></i></span>
+      </button>
+      <div class="reply-form-group" style="display:none;" >
+        <form method="post" class="reply-form" >
+          {% csrf_token %}
+          <input type="hidden" name="comment_id" value="{{ comment.id }}">
+          <textarea name="contents" class="joseon_reply_contents_input"
+            maxlength="600" placeholder="배려와 책임의 의사소통을 보여주세요."
+            required></textarea>
+          <input type="submit" value="답글" class="joseon_reply_btn">
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {% for reply in comment.replies.all %}
+  <div class="replied-comments-container" >
+    <div class="replied-comments-container_margin">
+      <div class="comment-author">
+        {% if reply.author == post.author %}
+          <a href="{% url 'get_user_profile' reply.author.profile.nickname %}">{{ reply.author.profile.nickname }}<a> <span style="color:#0080C3;">(글쓴이)</span>
+          {% if reply.is_recent %}
+            <span class="comment-created_date">{{ reply.created_date|timesince }} 전</span>
+          {% else %}
+            <span class="comment-created_date">{{  reply.created_date|date:'y.m.d g:i a' }}</span>
+          {% endif %}
+        {% else %}
+          <a href="{% url 'get_user_profile' reply.author.profile.nickname %}">{{ reply.author.profile.nickname }}</a>
+          {% if reply.is_recent %}
+            <span class="comment-created_date">{{ reply.created_date|timesince }} 전</span>
+          {% else %}
+            <span class="comment-created_date">{{  reply.created_date|date:'y.m.d g:i a' }}</span>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="comment-contents">{{ reply.contents }}</div>
+      <div class="comment-evaluation-container">
+        <div class="reply-up-section-{{reply.id}}">
+          {% include 'crazylab/section/reply_up_section.html' %}
+        </div>
+        <div class="reply-down-section-{{reply.id}}">
+          {% include 'crazylab/section/reply_accuse_section.html' %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+{% endfor %}
+
+{% else %}
+<span class="comment-count nkk">댓글</span>
+<span class="comment-count" style="color:#0080C3;">{{ comment_all.count }}</span>
+{% for top in comment_top %}
+	{% if top.total >= 1 %}
+  <div class="top-comments-container">
+    <div class="comment-author">
+      {% if  top.author == post.author %}
+        <span class="best-comment">BEST</span> <a href="{% url 'get_user_profile' top.author.profile.nickname %}">{{ top.author.profile.nickname }}</a> <span style="color:#0080C3;">(글쓴이)</span>
+        {% if top.is_recent %}
+          <span class="comment-created_date">{{ top.created_date|timesince }} 전</span>
+        {% else %}
+          <span class="comment-created_date">{{  top.created_date|date:'y.m.d g:i a' }}</span>
+        {% endif %}
+      {% else %}
+        <span class="best-comment">BEST</span> <a href="{% url 'get_user_profile' top.author.profile.nickname %}">{{  top.author.profile.nickname }}</a>
+        {% if top.is_recent %}
+          <span class="comment-created_date">{{ top.created_date|timesince }} 전</span>
+        {% else %}
+          <span class="comment-created_date">{{  top.created_date|date:'y.m.d g:i a' }}</span>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="comment-contents">{{ top.contents }}</div>
+    <div class="comment-evaluation-container">
+      <div class="top-up-section-{{top.id}}">
+        {% include 'crazylab/section/top_up_section.html' %}
+      </div>
+      <div class="top-down-section-{{top.id}}">
+        {% include 'crazylab/section/top_accuse_section.html' %}
+      </div>
+    </div>
+  </div>
+	{% endif %}
+{% endfor %}
+
+{% for comment in comments %}
+  <div class="comments-container" >
+    <div class="comment-author">
+      {% if comment.author == post.author %}
+        <a href="{% url 'get_user_profile' comment.author.profile.nickname %}">{{ comment.author.profile.nickname }}</a> <span style="color:#0080C3;">(글쓴이)</span>
+        {% if comment.is_recent %}
+          <span class="comment-created_date">{{ comment.created_date|timesince }} 전</span>
+        {% else %}
+          <span class="comment-created_date">{{  comment.created_date|date:'y.m.d g:i a' }}</span>
+        {% endif %}
+      {% else %}
+        <a href="{% url 'get_user_profile' comment.author.profile.nickname %}">{{ comment.author.profile.nickname }}</a>
+        {% if comment.is_recent %}
+          <span class="comment-created_date">{{ comment.created_date|timesince }} 전</span>
+        {% else %}
+          <span class="comment-created_date">{{  comment.created_date|date:'y.m.d g:i a' }}</span>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div class="comment-contents">{{ comment.contents }}</div>
+    <div class="comment-evaluation-container">
+      <div class="comment-up-section-{{comment.id}}">
+        {% include 'crazylab/section/comment_up_section.html' %}
+      </div>
+      <div class="comment-down-section-{{comment.id}}">
+        {% include 'crazylab/section/comment_accuse_section.html' %}
+      </div>
+    </div>
+    <div class="reply-position">
+      <button type="button" name="button" class="reply-btn">
+        <span title="답글"><i class="fas fa-pencil-alt"></i></span>
+      </button>
+      <div class="reply-form-group" style="display:none;" >
+        <form method="post" class="reply-form" >
+          {% csrf_token %}
+          <input type="hidden" name="comment_id" value="{{ comment.id }}">
+          <textarea name="contents" class="joseon_reply_contents_input"
+            maxlength="600" placeholder="배려와 책임의 의사소통을 보여주세요."
+            required></textarea>
+          <input type="submit" value="답글" class="joseon_reply_btn">
+        </form>
+      </div>
+    </div>
+  </div>
+
+  {% for reply in comment.replies.all %}
+  <div class="replied-comments-container" >
+    <div class="replied-comments-container_margin">
+      <div class="comment-author">
+        {% if reply.author == post.author %}
+          <a href="{% url 'get_user_profile' reply.author.profile.nickname %}">{{ reply.author.profile.nickname }}<a> <span style="color:#0080C3;">(글쓴이)</span>
+          {% if reply.is_recent %}
+            <span class="comment-created_date">{{ reply.created_date|timesince }} 전</span>
+          {% else %}
+            <span class="comment-created_date">{{  reply.created_date|date:'y.m.d g:i a' }}</span>
+          {% endif %}
+        {% else %}
+          <a href="{% url 'get_user_profile' reply.author.profile.nickname %}">{{ reply.author.profile.nickname }}</a>
+          {% if reply.is_recent %}
+            <span class="comment-created_date">{{ reply.created_date|timesince }} 전</span>
+          {% else %}
+            <span class="comment-created_date">{{  reply.created_date|date:'y.m.d g:i a' }}</span>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="comment-contents">{{ reply.contents }}</div>
+      <div class="comment-evaluation-container">
+        <div class="reply-up-section-{{reply.id}}">
+          {% include 'crazylab/section/reply_up_section.html' %}
+        </div>
+        <div class="reply-down-section-{{reply.id}}">
+          {% include 'crazylab/section/reply_accuse_section.html' %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+{% endfor %}
+{% endif %}

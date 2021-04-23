@@ -1,0 +1,19 @@
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+<form action="{% url 'crazylab:recommend' %}" method="POST">
+  {% csrf_token %}
+  {% if request.user in post.recommend.all %}
+    <button type="submit"  id="recommend" value="{{ post.id }}" class="joseon_detail_btn">
+			<span style="color:#ff0000;" title="추천"><i class="fas fa-long-arrow-alt-up"></i></span>
+		</button>
+		<span class="joseon_detail-btn-count" style="color:#ff0000;">{{ post.all_recommend }}</span>
+  {% else %}
+    <button type="submit"  id="recommend" value="{{ post.id }}" class="joseon_detail_btn">
+			<span title="추천"><i class="fas fa-long-arrow-alt-up"></i></span>
+		</button>
+		<span class="joseon_detail-btn-count">{{ post.all_recommend }}</span>
+  {% endif %}
+</form>

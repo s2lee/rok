@@ -1,0 +1,11 @@
+{% if messages %}
+	{% for message in messages %}
+		<script>alert("{{ message }}")</script>
+	{% endfor %}
+{% endif %}
+{% if request.user != reply.author %}
+<form action="{% url 'reality:accuse_comment' %}" method="POST">
+  {% csrf_token %}
+    <button type="submit" class="reply_accuse" value1="{{reply.id}}" value2="{{reply.author.id}}" value3="reply">신고</button>
+</form>
+{% endif %}

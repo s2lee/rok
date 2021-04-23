@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main-contents-container">
+  <div class="profile-container">
+    <div class="front-face">
+      <div class="front-cover">
+        <h2>PRESS</h2>
+      </div>
+      <div class="photo">
+        <img src="{{ profile.image.url }}" class="profile">
+      </div>
+      <div class="name">{{ profile.nickname }}</div>
+      <div class="bottom-cover">
+        <h3>The Rank of Korea</h3>
+      </div>
+    </div>
+    <div class="back-face">
+      <div class="back-cover">
+        <h3>JOURNALIST</h3>
+      </div>
+      <div class="about">
+        <div class="left-about">
+          <div class="tag">꿈<br><span>{{ profile.dream }}</span></div>
+          <div class="tag">취미<br><span>{{ profile.hobby }}</span></div>
+          <div class="tag" title="{{ profile.interest }}">관심사<br><span>{{ profile.interest }}</span></div>
+        </div>
+        <div class="right-about">
+          <div class="tag">SS지수<br><span>1332</span></div>
+          <div class="tag">소속<br><span>사헌부</span></div>
+        </div>
+      </div>
+      <div class="bottom-saying">
+        <span>펜은 칼보다 강하다</span>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

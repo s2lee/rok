@@ -1,0 +1,49 @@
+@font-face{
+  font-family:Playfair_Display;
+  src:url('../fonts/Playfair_Display/static/PlayfairDisplay-SemiBold.ttf');
+}
+
+@font-face{
+  font-family:Noto_Sans_KR;
+  src:url('../fonts/Noto_Sans_KR/NotoSansKR-Light.otf');
+}
+
+@font-face{
+  font-family:Noto_Sans_KR_Regular;
+  src:url('../fonts/Noto_Sans_KR/NotoSansKR-Regular.otf');
+}
+
+@font-face{
+  font-family:Fjalla_One;
+  src:url('../fonts/Fjalla_One/FjallaOne-Regular.ttf');
+}
+
+@font-face{
+  font-family:Fira_sans;
+  src:url('../fonts/Fira_Sans/FiraSans-ExtraBold.ttf');
+}
+
+@font-face{
+  font-family:Nanum_Myeongjo;
+  src:url('../fonts/Nanum_Myeongjo/NanumMyeongjo-Regular.ttf');
+}
+
+@font-face{
+  font-family:Anton;
+  src:url('../fonts/Anton/Anton-Regular.ttf');
+}
+
+@font-face{
+  font-family:Noto_Serif_KR;
+  src:url('../fonts/Noto_Serif_KR/NotoSerifKR-SemiBold.otf');
+}
+
+@font-face{
+  font-family:Noto_Serif_KR_Medium;
+  src:url('../fonts/Noto_Serif_KR/NotoSerifKR-Medium.otf');
+}
+
+@font-face{
+  font-family:나눔고딕;
+  src:url('../fonts/Nanum_Gothic/NanumGothic-Bold.ttf');
+}

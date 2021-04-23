@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if messages %}
+    <script>alert("{{ messages }}")</script>
+{% endif %}
+<div class="main-contents-container">
+  <div class="article-container">
+    <div style="text-align:center;"><h2 >CrazyLab 스크랩</h2></div>
+    <table class="default-article-list-table">
+      <tbody>
+      {% for crazylab_scrap in crazylab_scraps %}
+      <tr>
+        <td class="default-article-title">
+          <a href="{{ crazylab_scrap.get_absolute_url }}">{{ crazylab_scrap.title }}</a>
+        </td>
+        <td class="default-article-author">{{ crazylab_scrap.author.profile.nickname }}
+          <form action="{% url 'crazylab:user_scrap' crazylab_scrap.pk %}" method="POST">
+            {% csrf_token %}
+              <button type="submit" name="post_id" value="{{ crazylab_scrap.id }}" class="department-selection-btn" style="margin:0;background-image: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);">스크랩 해제</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+    <div style="text-align:center;"><h2>조선시대 스크랩</h2></div>
+    <table class="default-article-list-table">
+      <tbody>
+      {% for joseon_scrap in joseon_scraps %}
+      <tr>
+        <td class="default-article-title">
+          <a href="{{ joseon_scrap.get_absolute_url }}">{{ joseon_scrap.title }}</a>
+        </td>
+        <td class="default-article-author">{{ joseon_scrap.anonymous }}
+          <form action="{% url 'joseon:user_scrap' joseon_scrap.pk %}" method="POST">
+            {% csrf_token %}
+              <button type="submit" name="post_id" value="{{ joseon_scrap.id }}" class="department-selection-btn" style="margin:0;background-image: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);">스크랩해제</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+    <div style="text-align:center;"><h2>현실 스크랩</h2></div>
+    <table class="default-article-list-table">
+      <tbody>
+      {% for reality_scrap in reality_scraps %}
+      <tr>
+        <td class="default-article-title">
+          <a href="{{ reality_scrap.get_absolute_url }}">{{ reality_scrap.title }}</a>
+        </td>
+        <td class="default-article-author">{{ reality_scrap.author.profile.nickname }}
+          <form action="{% url 'reality:user_scrap' reality_scrap.pk %}" method="POST">
+            {% csrf_token %}
+              <button type="submit" name="post_id" value="{{ reality_scrap.id }}" class="department-selection-btn" style="margin:0;background-image: linear-gradient(120deg, #a6c0fe 0%, #f68084 100%);">스크랩해제</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+  </div>
+</div>
+{% endblock%}
