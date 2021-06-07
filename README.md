@@ -27,6 +27,7 @@
 - Python
 - JavaScript
 - AWS EC2(Windows)
+- PyCharm, Visual Studio Code, Windows
 # 3. 주요 기능
 - 게시판
 - 게시글 추천 기능
