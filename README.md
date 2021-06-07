@@ -2,7 +2,7 @@
 - [Part 1. 프로젝트 소개](#1-프로젝트-소개)
 - [Part 2. 사용 기술 스택](#2-사용-기술-스택)
 - [Part 3. 주요 기능](#3-주요-기능)
-  - 조선시대에 게시글, 댓글 작성시 랜덤닉네임 부여 기능
+  - 조선 시대에 게시글, 댓글 작성시 랜덤닉네임 부여 기능
   - 화면 상단에서 전체회원의 정치성향 증감률을 실시간 확인하는 기능
   - 조선 시대 품계를 모델로 한 레벨링
   - 상점과 아이템  
@@ -35,7 +35,51 @@
 - AWS EC2(Windows)
 - PyCharm, Visual Studio Code, Windows
 # 3. 주요 기능
-- 조선시대에 게시글, 댓글 작성시 랜덤닉네임 부여 기능
+## 조선 시대에 게시글, 댓글 작성시 랜덤닉네임 부여 기능  
+조선 시대를 제외한 게시판에서는 회원가입 때 작성한 닉네임을 사용하지만 조선 시대에서는 익명성을 보장하기 위해 게시글이나 댓글, 답글을 작성할 때 무작위 닉네임을 부여합니다.  
+
+**1. 무작위 닉네임은 형용사 + 명사를 조합해서 사용합니다.**  
+**2. make_nickname 함수를 만들어 adjective.txt 와 word.txt에서 단어를 가져와 닉네임을 만들고 리턴합니다.**  
+```python
+def make_nickname():
+    adj = open('joseon/adjective.txt', mode='r', encoding='utf-8')
+    adjline = adj.readlines()
+    adj.close()
+    adjective = random.choice(adjline)
+    words = open('joseon/word.txt', mode='r', encoding='utf-8')
+    wordsline = words.readlines()
+    words.close()
+    word = random.choice(wordsline)
+    name = (adjective + " " + word)
+
+    return name
+```
+
+**3. 게시글과 댓글, 답글을 작성할 때 anonymous 값을 넣어줍니다. (게시글 예시)**  
+```python
+def post_economy(request):
+    title = request.POST['title']
+    category = Category.objects.get(name='경제')
+    contents = request.POST['contents']
+    name = make_nickname()
+    jprofile = JProfile.objects.only('political_orientation').get(user=request.user)
+    qs = Post(
+            title=title,
+            category=category,
+            contents=contents,
+            author=request.user,
+            anonymous=name,
+            political_orientation=jprofile.political_orientation
+        )
+    qs.save()
+    coin = Coin.objects.only('blackcoin').get(user=request.user)
+    coin.blackcoin += 2
+    coin.save()
+
+    return HttpResponseRedirect(reverse('joseon:economy_list'))
+``` 
+  
+캡쳐 이미지
 - 화면 상단에 실시간 신규회원의 정치성향 증감률 확인 기능
 - 조선 시대 품계를 모델로 한 레벨링
 - 상점과 아이템
