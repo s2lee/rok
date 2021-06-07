@@ -123,6 +123,30 @@ scheduler.start()
   
 ## 조선 시대 품계를 모델로 한 레벨링  
 회원가입을 하면 조선 시대 품계 종9품의 기자로 시작합니다. 평소 관심사에 대한 글을 쓰면서 품계 상승을 할 수있습니다. 품계는 종9품부터 정1품까지 나아 갈 수 있고 정1품이 되면 랭커가 될 수 있는 자격이 주어집니다. 종6품이상이 되면 전직 부서를 정할 수 있습니다. 부서의 종류는 공조, 이조, 사간원, 사헌부, 의금부가 있습니다. 부서별로 주어지는 역할과 레벨링 조건이 다릅니다.  
+단순 조건문으로 조건이 만족하면 레벨업을 수행하는 함수를 작성하였습니다.
+```python
+def BAIlevelup(request):
+    jprofile = JProfile.objects.get(user=request.user)
+    coin = Coin.objects.get(user=request.user)
+    certificate = Certificate.objects.get(user=request.user)
+    userkey = UserKey.objects.get(user=request.user)
+
+    conditionSet = (
+        jprofile.levels == 12
+        and certificate.BAIcertificate >= 1
+        and userkey.BAIfirstkey == 1
+    )
+    
+    if conditionSet:
+        jprofile.position = '정언'
+        jprofile.levels -= 1
+        jprofile.save()
+        certificate.BAIcertificate -= 1
+        certificate.save()
+    else:
+        if jprofile.levels == 12 and certificate.BAIcertificate < 1:
+            messages.error(request, "증서가 부족합니다")
+```
 
   
 ## 상점과 아이템
