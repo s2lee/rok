@@ -77,10 +77,12 @@ def post_economy(request):
     coin.save()
 
     return HttpResponseRedirect(reverse('joseon:economy_list'))
-``` 
-  
-캡쳐 이미지
-- 화면 상단에 실시간 신규회원의 정치성향 증감률 확인 기능
+```  
+**조선 시대 게시글 예시**  
+
+![random_nickname](https://user-images.githubusercontent.com/82914197/120980107-3ce96680-c7b1-11eb-94e2-d52deb64c05a.png)  
+
+## 화면 상단에 실시간 신규회원의 정치성향 증감률 확인 기능
 - 조선 시대 품계를 모델로 한 레벨링
 - 상점과 아이템
 # 4. 기본 기능
