@@ -78,13 +78,53 @@ def post_economy(request):
 
     return HttpResponseRedirect(reverse('joseon:economy_list'))
 ```  
-**조선 시대 게시글 예시**  
+**<조선 시대 게시글 예시>**
+<p align="center">
+  <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/120980107-3ce96680-c7b1-11eb-94e2-d52deb64c05a.png">
+</p>
+  
+  
+## 화면 상단에 실시간 신규회원의 정치성향 증감률 확인 기능  
+플랫폼 성격상 특정 정치 성향에 편중 되지 않기 위해 전체 회원의 실시간 정치성향분포를 나타내기로 하였습니다. 증감률은 어제 23:59:55초의 회원 정보를 저장한 후 오늘의 증감분을 계산 후 출력하였습니다.  
+원하는 시간에 Python script 를 실행하기 위해 라이브러리 APScheduler를 사용하였습니다.  
+```python
+scheduler = BackgroundScheduler()
+scheduler.add_jobstore(DjangoJobStore(), "default")
 
-![random_nickname](https://user-images.githubusercontent.com/82914197/120980107-3ce96680-c7b1-11eb-94e2-d52deb64c05a.png)  
+@register_job(scheduler, "cron", hour=23, minute=59, second=55)
+def cron_job2():
+    num_progressivism = JProfile.objects.filter(political_orientation='progressivism').count()
+    num_centrism = JProfile.objects.filter(Q(political_orientation='centrism') | Q(political_orientation='default')).count()
+    num_conservatism = JProfile.objects.filter(political_orientation='conservatism').count()
+    classification_progressivism = Classification.objects.get(political_orientation='progressivism')
+    classification_progressivism.numberOfUser = num_progressivism
+    classification_progressivism.save()
+    classification_centrism = Classification.objects.get(political_orientation='centrism')
+    classification_centrism.numberOfUser = num_centrism
+    classification_centrism.save()
+    classification_conservatism = Classification.objects.get(political_orientation='conservatism')
+    classification_conservatism.numberOfUser = num_conservatism
+    classification_conservatism.save()
+    db.connections.close_all()
 
-## 화면 상단에 실시간 신규회원의 정치성향 증감률 확인 기능
-- 조선 시대 품계를 모델로 한 레벨링
-- 상점과 아이템
+register_events(scheduler)
+scheduler.start()
+```  
+**<웹 화면 상단>**
+<p align="center">
+  <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/121003502-93ae6a80-c7c8-11eb-8279-b8b8cba4184f.PNG">
+</p>  
+
+**<모바일 화면 상단>**  
+<p align="center">
+  <img width="25%" height="25%" src="https://user-images.githubusercontent.com/82914197/121003564-a45ee080-c7c8-11eb-8e4a-9863ad661a3c.PNG">
+</p>
+  
+  
+## 조선 시대 품계를 모델로 한 레벨링  
+  
+  
+## 상점과 아이템
 # 4. 기본 기능
 - 로그인
 - 회원가입
