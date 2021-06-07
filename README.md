@@ -78,7 +78,7 @@ def post_economy(request):
 
     return HttpResponseRedirect(reverse('joseon:economy_list'))
 ```  
-**<조선 시대 게시글 예시>**
+**<p align="center"><조선 시대 게시글 예시></p>**
 <p align="center">
   <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/120980107-3ce96680-c7b1-11eb-94e2-d52deb64c05a.png">
 </p>
@@ -110,12 +110,12 @@ def cron_job2():
 register_events(scheduler)
 scheduler.start()
 ```  
-**<웹 화면 상단>**
+**<p align="center"><웹 화면 상단></p>**
 <p align="center">
   <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/121003502-93ae6a80-c7c8-11eb-8279-b8b8cba4184f.PNG">
 </p>  
 
-**<모바일 화면 상단>**  
+**<p align="center"><모바일 화면 상단></p>** 
 <p align="center">
   <img width="25%" height="25%" src="https://user-images.githubusercontent.com/82914197/121003564-a45ee080-c7c8-11eb-8e4a-9863ad661a3c.PNG">
 </p>
