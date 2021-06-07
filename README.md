@@ -80,7 +80,7 @@ def post_economy(request):
 ```  
 **<p align="center"><조선 시대 게시글 예시></p>**
 <p align="center">
-  <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/120980107-3ce96680-c7b1-11eb-94e2-d52deb64c05a.png">
+  <img width="90%" height="90%" src="https://user-images.githubusercontent.com/82914197/120980107-3ce96680-c7b1-11eb-94e2-d52deb64c05a.png">
 </p>
   
   
@@ -122,7 +122,8 @@ scheduler.start()
   
   
 ## 조선 시대 품계를 모델로 한 레벨링  
-  
+회원가입을 하면 조선 시대 품계 종9품의 기자로 시작합니다. 평소 관심사에 대한 글을 쓰면서 품계 상승을 할 수있습니다. 품계는 종9품부터 정1품까지 나아 갈 수 있고 정1품이 되면 랭커가 될 수 있는 자격이 주어집니다. 종6품이상이 되면 전직 부서를 정할 수 있습니다. 부서의 종류는 공조, 이조, 사간원, 사헌부, 의금부가 있습니다. 부서별로 주어지는 역할과 레벨링 조건이 다릅니다.  
+
   
 ## 상점과 아이템
 # 4. 기본 기능
