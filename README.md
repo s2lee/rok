@@ -77,7 +77,7 @@ def post_economy(request):
 ```  
 **<p align="center"><조선 시대 게시글 예시></p>**
 <p align="center">
-  <img width="90%" height="90%" src="https://user-images.githubusercontent.com/82914197/120980107-3ce96680-c7b1-11eb-94e2-d52deb64c05a.png">
+  <img src="https://user-images.githubusercontent.com/82914197/120980107-3ce96680-c7b1-11eb-94e2-d52deb64c05a.png">
 </p>
   
   
@@ -109,7 +109,7 @@ scheduler.start()
 ```  
 **<p align="center"><웹 화면 상단></p>**
 <p align="center">
-  <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/121003502-93ae6a80-c7c8-11eb-8279-b8b8cba4184f.PNG">
+  <img src="https://user-images.githubusercontent.com/82914197/121003502-93ae6a80-c7c8-11eb-8279-b8b8cba4184f.PNG">
 </p>  
 
 **<p align="center"><모바일 화면 상단></p>** 
@@ -236,13 +236,13 @@ $(document).on('click', '#spear', function(event){
 ```  
 **<p align="center"><상점 화면></p>**
 <p align="center">
-  <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/121124987-c4da7980-c860-11eb-9ef2-e61b2cfb9b8f.PNG">
+  <img src="https://user-images.githubusercontent.com/82914197/121124987-c4da7980-c860-11eb-9ef2-e61b2cfb9b8f.PNG">
 </p>  
   
   
 **<p align="center"><게시글에 창 사용></p>**
 <p align="center">
-  <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/121124995-c6a43d00-c860-11eb-8c80-3952907cca56.PNG">
+  <img src="https://user-images.githubusercontent.com/82914197/121124995-c6a43d00-c860-11eb-8c80-3952907cca56.PNG">
 </p>    
   
  ## 커뮤니티 게시판과 댓글  
@@ -310,7 +310,7 @@ def crazylab_detail(request, pk):
 ```  
 **<p align="center"><댓글 구성 예시></p>**
 <p align="center">
-  <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/121182092-b2cafc00-c89d-11eb-8dfc-2fb29f70e481.PNG">
+  <img src="https://user-images.githubusercontent.com/82914197/121182092-b2cafc00-c89d-11eb-8dfc-2fb29f70e481.PNG">
 </p>   
 
 # 4. 주요 이슈
