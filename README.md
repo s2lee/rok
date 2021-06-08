@@ -149,7 +149,94 @@ def BAIlevelup(request):
 ```
 
   
-## 상점과 아이템
+## 상점과 아이템  
+상점에는 조선 시대에서 사용할 수 있는 아이템(창, 방패, 칼, 갑옷), 부서마다 다른 스페셜 아이템, 레벨업 재료인 증서와 키를 구매할 수 있습니다. 창과 방패는 게시글, 댓글, 답글에 대한 추천, 반대 효과가 있고 칼과 갑옷은 부적절한 유저에 대한 신고기능과 신고방어 효과가 있습니다.    
+
+**1. 상점에서 창을 구매하는 함수 입니다.**  
+```python
+def buySpear(request):
+    try:
+        count = int(request.POST['count'])
+        item = Item.objects.get(user=request.user)
+        coin = Coin.objects.get(user=request.user)
+        if coin.blackcoin >= count:
+            item.spear += count
+            item.save()
+            coin.blackcoin -= count
+            coin.save()
+            messages.success(request, "창을 성공적으로 샀어요")
+        else:
+            messages.error(request, "코인이 부족합니다")
+        return redirect('core:shop')
+    except ValueError:
+        messages.error(request, "입력한 값이 없습니다.")
+        return redirect('core:shop')
+```  
+
+**2. 게시글에 창을 사용하는 함수입니다.**
+```python
+def add_spear(request):
+    post = get_object_or_404(Post, id=request.POST.get('id'))
+    item = Item.objects.get(user=request.user)
+    if post.author != request.user:
+        if post.spear.filter(id=request.user.id).exists():
+            messages.info(request, "창을 이미 사용하였습니다.")
+        else:
+            if item.spear >= 1:
+                post.spear.add(request.user)
+                post.all_recommend += 1
+                post.save()
+                item.spear -= 1
+                item.save()
+            else:
+                messages.info(request, "창이 없습니다.")
+    else:
+        messages.info(request, "불가능합니다.")
+
+    context = {
+        'post' : post,
+        'get_total_spear' : post.get_total_spear()
+    }
+    if request.is_ajax():
+        html = render_to_string('joseon/section/spear_section.html', context, request=request)
+    return JsonResponse({'form': html})
+```    
+**3. 창 버튼 HTML 구성입니다.**
+```html
+<form action="{% url 'joseon:add_spear' %}" method='POST'>
+  {% csrf_token %}
+  {% if request.user in post.spear.all %}
+    <button type="submit" id="spear" value="{{ post.id }}" class="joseon_detail_btn">
+			<img src="{% static 'images/spear-red.png' %}" alt="" title="창">
+		</button>
+		<span class="joseon_detail-btn-count" style="color:#ff0000;">{{ get_total_spear }}</span>
+  {% else %}
+    <button type="submit" id="spear" value="{{ post.id }}" class="joseon_detail_btn">
+			<img src="{% static 'images/spear-detail.png' %}" alt="" title="창">
+		</button>
+		<span class="joseon_detail-btn-count">{{ get_total_spear }}</span>
+  {% endif %}
+</form>
+```  
+**4. 새로고침이 없는 버튼클릭을 위해 Ajax를 사용하여 구현하였습니다.**
+```javascript
+$(document).on('click', '#spear', function(event){
+	    event.preventDefault();
+	    var pk = $(this).attr('value');
+	    $.ajax({
+	      type: 'POST',
+	      url : '{% url "joseon:add_spear" %}',
+	      data: {'id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+	      dataType: 'json',
+	      success: function(response){
+	        $('#spear-section').html(response['form']);
+	      },
+	      error: function(response, e){
+	        alert("아이템 사용을 실패하였습니다.");
+	      },
+	    });
+	  });
+```
 # 4. 기본 기능
 - 로그인
 - 회원가입
