@@ -6,16 +6,13 @@
   - [화면 상단에서 전체회원의 정치성향 증감률을 실시간 확인하는 기능](#화면-상단에서-전체회원의-정치성향-증감률을-실시간-확인하는-기능)
   - [조선 시대 품계를 모델로 한 레벨링](#조선-시대-품계를-모델로-한-레벨링)
   - [상점과 아이템](#상점과-아이템)  
-- [Part 4. 기본 기능](#4-기본-기능)
-  - 로그인
-  - 회원가입
-  - 커뮤니티 게시판과 댓글, 답글, TOP3 댓글 고정 기능
-  - 게시글 추천 및 조선시대 창과 방패 기능
-  - 프로필 보기 / 수정
-  - 스크랩
-  - 인벤토리
-- [Part 5. 주요 이슈](#5-주요-이슈)
-- [Part 6. 보완할 점](#6-보완할-점)
+  - [커뮤니티 게시판과 댓글](#커뮤니티-게시판과-댓글)
+- [Part 4. 주요 이슈](#4-주요-이슈)  
+  - 게시글 도배 방지  
+  - 조선 시대에서 랜덤 닉네임을 댓글에 부여하는 것  
+  - manytomany 필드가 많아지면서 화면 로딩시간이 길어져 추천기능 비동기화  
+  - top 고정배너에 정치성향분포 표현 이슈
+- [Part 5. 보완할 점](#5-보완할-점)
 
 # 1. 프로젝트 소개
 **The Rank of Korea (2021)**
@@ -265,7 +262,8 @@ class PublicIdeaListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(PublicIdeaListView, self).get_context_data(**kwargs)
-        context['tops'] = Post.objects.filter(category__name='공익아이디어').annotate(comment_count=Count('comments')).order_by('-all_recommend','-date_posted')[:5]
+        context['tops'] = Post.objects.filter(category__name='공익아이디어').annotate(
+                          comment_count=Count('comments')).order_by('-all_recommend','-date_posted')[:5]
 
         return context
 ```  
@@ -310,18 +308,15 @@ def crazylab_detail(request, pk):
 
     return render(request, 'crazylab/crazylab_detail.html', context)
 ```  
-    
-# 4. 기본 기능
-### 로그인
-- 회원가입
-- 프로필 보기 / 수정
-- 스크랩
-- 인벤토리
-- 커뮤니티 게시판과 댓글, 답글, TOP3 댓글 고정 기능
-- 게시글 추천 및 조선시대 창과 방패 기능
-# 5. 주요 이슈
-- debug toolbar로 쿼리 중복최소화 제거하고
+**<p align="center"><댓글 구성 예시></p>**
+<p align="center">
+  <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/121182092-b2cafc00-c89d-11eb-8dfc-2fb29f70e481.PNG">
+</p>   
+
+# 4. 주요 이슈
 - 게시글 도배 방지
-- manytomany 필드 버튼 누르면 페이지 다시 가져와서 로딩가지니깐 spa로 ajax 비동기 구현
-- top 고정배너에 정치선호분포 포현 이슈(celery, threading, schedule, apschedule 중에서 apschedule 사용)
-# 6. 보완할 점
+- 조선 시대에서 랜덤 닉네임을 댓글에 부여하는 것
+- manytomany 필드가 많아지면서 화면 로딩시간이 길어져 추천기능 비동기화
+- top 고정배너에 정치성향분포 표현 이슈
+
+# 5. 보완할 점
