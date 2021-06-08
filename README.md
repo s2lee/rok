@@ -247,7 +247,70 @@ $(document).on('click', '#spear', function(event){
 <p align="center">
   <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/121124995-c6a43d00-c860-11eb-8c80-3952907cca56.PNG">
 </p>    
+  
+ ## 커뮤니티 게시판과 댓글  
+커뮤니티 게시판과 댓글, 답글을 구현해 보았습니다. Debug toolbar를 사용하여 쿼리가 중복되는 부분을 찾고 중복을 최소화 했습니다.  
+  
+**1. 게시글을 불러올 때 OneToOne관계와 ForeignKey관계에 있는 쿼리셋의 중복을 최소화하였습니다.**  
+```python
+class PublicIdeaListView(ListView):
+    model = Post
+    template_name = 'crazylab/publicidea_list.html'
+    context_object_name = 'posts'
+    paginate_by = 47
 
+    def get_queryset(self):
+        return Post.objects.filter(category__name='공익아이디어').select_related('author').prefetch_related(
+            'author__profile').annotate(comment_count=Count('comments'))
+
+    def get_context_data(self, **kwargs):
+        context = super(PublicIdeaListView, self).get_context_data(**kwargs)
+        context['tops'] = Post.objects.filter(category__name='공익아이디어').annotate(comment_count=Count('comments')).order_by('-all_recommend','-date_posted')[:5]
+
+        return context
+```  
+**2. 댓글과 답글을 불러올 때 ForeignKey관계와 ManyToMany 관계에 있는 쿼리셋의 중복을 최소화하였습니다.**  
+```python
+@login_required(login_url='login')
+def crazylab_detail(request, pk):
+    post = Post.objects.select_related('author','author__profile').prefetch_related('scrap').get(pk=pk)
+
+    comments = Comment.objects.select_related('author', 'author__profile').prefetch_related(
+                'up', 'replies__up', 'replies__author__profile').filter(post=post, reply=None)
+
+    comment_all = Comment.objects.filter(post=post)
+
+    comment_top = Comment.objects.select_related('author','author__profile').prefetch_related(
+                'up').filter(post=post).order_by('-total','-created_date')[:3]
+
+    jprofile = JProfile.objects.values('department').get(user=request.user)
+
+    if request.method =='POST':
+        contents = request.POST.get('contents')
+        reply_id = request.POST.get('comment_id')
+        comment_qs = None
+        if reply_id:
+            comment_qs = Comment.objects.get(id=reply_id)
+        comment = Comment.objects.create(post=post, author=request.user, contents=contents, reply=comment_qs)
+        comment.save()
+
+    context = {
+        'post' : post,
+        'comments' : comments,
+        'comment_all' : comment_all,
+        'comment_top' : comment_top,
+        'get_total_scrap' : post.get_total_scrap(),
+        'get_total_star' : post.get_total_star(),
+        'jprofile' : jprofile
+    }
+
+    if request.is_ajax():
+        html = render_to_string('crazylab/section/comments.html', context, request=request)
+        return JsonResponse({'form': html})
+
+    return render(request, 'crazylab/crazylab_detail.html', context)
+```  
+    
 # 4. 기본 기능
 ### 로그인
 - 회원가입
