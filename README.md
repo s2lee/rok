@@ -249,7 +249,7 @@ $(document).on('click', '#spear', function(event){
 </p>    
 
 # 4. 기본 기능
-- 로그인
+### 로그인
 - 회원가입
 - 프로필 보기 / 수정
 - 스크랩
