@@ -5,7 +5,7 @@
   - 조선 시대에 게시글, 댓글 작성시 랜덤닉네임 부여 기능
   - 화면 상단에서 전체회원의 정치성향 증감률을 실시간 확인하는 기능
   - 조선 시대 품계를 모델로 한 레벨링
-  - 상점과 아이템  
+  - [상점과 아이템](#상점과-아이템)  
 - [Part 4. 기본 기능](#4-기본-기능)
   - 로그인
   - 회원가입
@@ -236,7 +236,18 @@ $(document).on('click', '#spear', function(event){
 	      },
 	    });
 	  });
-```
+```  
+**<p align="center"><상점 화면></p>**
+<p align="center">
+  <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/121124987-c4da7980-c860-11eb-9ef2-e61b2cfb9b8f.PNG">
+</p>  
+  
+  
+**<p align="center"><게시글에 창 사용></p>**
+<p align="center">
+  <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/121124995-c6a43d00-c860-11eb-8c80-3952907cca56.PNG">
+</p>    
+
 # 4. 기본 기능
 - 로그인
 - 회원가입
