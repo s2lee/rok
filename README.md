@@ -314,16 +314,36 @@ def crazylab_detail(request, pk):
 </p>   
 
 # 4. 주요 이슈
-## 게시글 도배 방지  -> 보류
-보통의 커뮤니티 사이트에서는 글 도배가 방지돼 있는것을 확인하였습니다. 이걸 어떻게 구현할까 하다가 간단하게 생각이 닿은게 
-1. 게시글 포스트 하는 버튼을 5분에 한번식만 눌리게 하자.
-이 방법은 javascript를 사용하여 onclick()매서드를 건드려야 할 것같은데 javascript 에 능숙하지 않아서..
-2. 글을 게시하는 함수를 한사람당 ip를 key로 받아서 해서 함수를 5분에 한번식만 함수가 타임을 갖게 하자.
-어찌저찌하다가 ratelimit이라는 라이브러리에 도착했는데 잘 작동안하는것 같기도..  
-*ratelimit 인용*
 ## 조선 시대에서 랜덤 닉네임을 댓글 또는 답글에 부여하는 것  
-조선 시대에서 글을 쓸 때는 익명성을 보장하기 위해 고정닉네임 대신 랜덤 닉네임을 부여하기로 했습니다. 게시글을 포스트 할 때에는 post model에 anonymous필드를 추가하여 이 anonymous에 랜덤닉네임을 생성해서 넣어주면 포스트 마다 랜덤닉네임이 부여 되었지만 해당 게시글의 댓글을 쓸때는 문제가 생기는데
-예를들어 1번 사용자가 댓글을 쓰고 여기에 랜덤닉네임이 부여되면 그다음에 또 해당 게시글에 댓글을 달때는 새로운 닉네임이 다시 부여 되는 것이 아니라 처음에 부여했던 랜덤닉네임을 사용하게 끔 해야하는데 이부분을 구현하는게 상당히 어려웠습니다..모든 익명닉네임을 통일해서 "익명"으로 통일하면 쉽겠지만 해당 게시글에 댓글을 다는 사용자마다 새로운 조합의 익명닉네임을 부여해보는게 제 도전이 었기에 5일정도를 계속 구글링도 해보고 여러가지 생각을 해보다가 방법이 떠올랐습니다. post model에 nickname_check 으로해서 manytomany필드를 만들고 여기에 처음에 댓글을 달면서 새로운 닉네임을 가지면 이제 nickname_check로 체크를 해주고 그다음에 댓글 달때는 새로운 닉네임을 부여안하고 처음 닉네임을 가져오게 하였습니다. 
+조선 시대에서 글을 쓸 때는 익명성을 보장하기 위해 고정닉네임을 사용하는 것이 아니라 랜덤 닉네임을 그 때마다 생성하여 사용하기로 했습니다. 게시글을 포스트 할 때에는 Post model에 anonymous 속성을 추가하여 랜덤닉네임을 생성해서 넣어주면 포스트 마다 랜덤닉네임이 부여 되었습니다. 하지만 해당 게시글의 댓글을 쓸 때 문제가 생깁니다.  
+
+**문제**
+1. 예를들어 사용자 'A' 가 9번 게시글에 댓글을 쓰면 Post model에 anonymous 속성에  랜덤닉네임이 생성된 후 부여됩니다.    
+2. 만약에 사용자 'A'가 9번 게시글에 댓글을 한번 더 쓰면 랜덤닉네임을 또 다시 생성되어 9번 게시글에서 사용자'A'의 랜덤닉네임이 변경되었습니다.  
+3. 제가 하고자 했던 바는 'A'가 9번 게시글에서 댓글을 쓸 때는 1번에서 만들어진 랜덤닉네임을 계속 사용하는 것이었습니다.        
+
+**해결**
+1. Post model에 nickname_check 속성을 추가해서 manytomany필드로 만듭니다.  
+2. 이 속성에 처음에 댓글을 달면서 새로운 닉네임을 가지면 이제 nickname_check로 체크를 해주고 그다음에 댓글 쓸 때는 새로운 닉네임을 부여안하고 처음 닉네임을 가져오게 하였습니다.
+```python
+if request.method =='POST':
+    contents = request.POST.get('contents')
+    reply_id = request.POST.get('comment_id')
+    comment_qs = None
+    if reply_id:
+        comment_qs = Comment.objects.get(id=reply_id)
+    comment = Comment.objects.create(post=post, author=request.user, contents=contents, reply=comment_qs)
+
+    if post.nickname_check.filter(id=request.user.id).exists():
+        first = Comment.objects.filter(post=post, author=request.user).first()
+        comment.anonymous = first.anonymous
+    else:
+        post.nickname_check.add(request.user)
+        post.save()
+        name = make_nickname()
+        comment.anonymous = name
+    comment.save()
+```
 ## manytomany 필드가 많아지면서 화면 로딩시간이 길어져 추천기능 비동기화  
 유튜브에 좋아요 싫어요는 댓글이 많아져도 로딩 속도가 그대로인데 제가 처음에 댓글에 추천 반대를 구현 할때는 이거를 누를때마다 페이지가 로딩되어서 속도가 댓글이 많아 질수록 쿼리가 많아져서 로딩속도가 오래 걸렸습니다. 아 그래서 새로고침없이 비동기화로 해야 될 것 같아서 ajax를 사용해서 버튼을 바꿨습니다.
 ## top 고정배너에 정치성향분포 표현 이슈  
