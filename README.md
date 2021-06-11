@@ -23,12 +23,10 @@
 **https://therok.net**
 
 # 2. 사용 기술 스택
-- Django
-- Ajax
-- Python
-- JavaScript
-- AWS EC2(Windows)
-- PyCharm, Visual Studio Code, Windows
+- **Front - Javascript, Ajax**
+- **Back - Python, Django**
+- **Server - AWS[EC2(windows)]**
+- **PyCharm, Visual Studio Code**
 # 3. 주요 기능
 ## 조선 시대에서 글을 작성할 때마다 랜덤 닉네임을 부여하는 기능  
 조선 시대를 제외한 게시판에서는 회원가입 때 작성한 닉네임을 사용하지만, 조선 시대에서는 익명성을 보장하기 위해 게시글이나 댓글, 답글을 작성할 때 무작위 닉네임을 부여합니다.  
