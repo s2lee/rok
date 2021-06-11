@@ -9,7 +9,7 @@
   - [커뮤니티 게시판과 댓글](#커뮤니티-게시판과-댓글)
 - [Part 4. 주요 이슈](#4-주요-이슈)  
   - [조선 시대에서 랜덤 닉네임을 댓글 또는 답글에 부여하는 문제](#조선-시대에서-랜덤-닉네임을-댓글-또는-답글에-부여하는-문제)  
-  - [manytomany필드가 많아지면서 화면 로딩시간이 길어지는 문제](#manytomany필드가-많아지면서-화면-로딩시간이-길어지는-문제)  
+  - [댓글 작성 시 manytomany필드가 많아지면서 화면 로딩시간이 길어지는 문제](#댓글-작성-시-manytomany필드가-많아지면서-화면-로딩시간이-길어지는-문제)  
   - [실시간 전체회원 정치성향 증감률 구하는 문제](#실시간-전체회원-정치성향-증감률-구하는-문제)  
 - [Part 5. 보완할 점](#5-보완할-점)
 
@@ -342,7 +342,7 @@ if request.method =='POST':
         comment.anonymous = name
     comment.save()
 ```
-## manytomany필드가 많아지면서 화면 로딩시간이 길어지는 문제  
+## 댓글 작성 시 manytomany필드가 많아지면서 화면 로딩시간이 길어지는 문제  
 **문제**  
 처음 댓글단 구성에 추천/반대 기능을 ManyToMany필드로 만들었을 때 구현하는 데 신경을 쓰느라 로딩 시간은 생각하지 못하였습니다. 그런데 어느 정도 구현하고 댓글에서 추천/반대를 눌러보니 페이지가 새로 고침 되면서 시간이 상당히 걸렸습니다. 이 로딩 시간이 댓글이 많아질수록 로딩 시간이 길어졌습니다. 유튜브만 사용해봐도 댓글에 있는 '좋아요/싫어요' 를 눌렀을 때 로딩 체감시간이 전혀 불편하지 않은데 제가 만든 추천/반대는 상식을 벗어나는 로딩속도를 보여주고 있었습니다.  
 **<p align="center"><Debug toolbar 화면></p>**
@@ -351,7 +351,47 @@ if request.method =='POST':
 </p>  
 
 **해결방법**  
-쿼리 중복을 최소한 한다고는 했지만 긴 로딩속도에 대해 다른 해결 방법을 찾아야 했습니다. 추천 버튼을 누를 때 새로 고침이 계속 발생하니까 여기서부터 방법을 찾으면 될 것 같아서 새로 고침을 안 하는 방향으로 해결 방법을 찾아보았습니다. 검색하던 중 Ajax를 사용해서 비동기적인 처리를 하면 페이지를 새로 고침 하지 않고 데이터만 주고받을 수 있다고 하여 추천/반대 기능뿐만 아니라 댓글, 답글을 작성하는 것과 아이템을 사용하는 모든 처리에서 비동기화를 구현하였습니다.
+쿼리 중복을 최소한 한다고는 했지만 긴 로딩속도에 대해 다른 해결 방법을 찾아야 했습니다. 추천 버튼을 누를 때 새로 고침이 계속 발생하니까 여기서부터 방법을 찾으면 될 것 같아서 새로 고침을 안 하는 방향으로 해결 방법을 찾아보았습니다. 검색하던 중 Ajax를 사용해서 비동기적인 처리를 하면 페이지를 새로 고침 하지 않고 데이터만 주고받을 수 있다고 하여 추천/반대 기능뿐만 아니라 댓글, 답글을 작성하는 것과 아이템을 사용하는 모든 처리에서 비동기화를 구현하였습니다.  
+```python
+def up_comment(request):
+    comment = get_object_or_404(Comment, id=request.POST.get('id'))
+    kind = request.POST.get('kind')
+    if comment.author != request.user:
+        if comment.up.filter(id=request.user.id).exists():
+            messages.info(request, "이미 UP하였습니다.")
+        else:
+            comment.up.add(request.user)
+            comment.total += 1
+            comment.save()
+    else:
+        messages.info(request, "불가능 합니다.")
+
+    if kind == 'comment':
+        context = {
+            'comment' : comment,
+        }
+
+    elif kind == 'reply':
+        reply = comment
+        context = {
+            'reply' : reply,
+        }
+
+    elif kind == 'top':
+        top = comment
+        context = {
+            'top' : top,
+        }
+
+    if request.is_ajax():
+        if kind == 'comment':
+            html = render_to_string('joseon/section/comment_up_section.html', context, request=request)
+        elif kind == 'reply':
+            html = render_to_string('joseon/section/reply_up_section.html', context, request=request)
+        elif kind == 'top':
+            html = render_to_string('joseon/section/top_up_section.html', context, request=request)
+    return JsonResponse({'form': html})
+```
 
 ## 실시간 전체회원 정치성향 증감률 구하는 문제  
 화면 상단에 전체 회원 정치성향 증감률을 실시간 표현하기 위해 어제의 데이터를 매일 일정한 시간에 저장할 필요가 있었습니다. 이를 위해서는 매일 일정한 시간에 해당 역할을 하는 함수를 작동시키게끔 하면 된다고 생각하였습니다. 검색해보니 이런 방법에 사용할 수 있는 목록이 celery, threading, schedule, apschedule 정도 있었습니다.  
