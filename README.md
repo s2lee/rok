@@ -8,17 +8,15 @@
   - [상점과 아이템](#상점과-아이템)  
   - [커뮤니티 게시판과 댓글](#커뮤니티-게시판과-댓글)
 - [Part 4. 주요 이슈](#4-주요-이슈)  
-  - 게시글 도배 방지  
-  - 조선 시대에서 랜덤 닉네임을 댓글에 부여하는 것  
-  - manytomany 필드가 많아지면서 화면 로딩시간이 길어져 추천기능 비동기화  
-  - top 고정배너에 정치성향분포 표현 이슈
+  - [조선 시대에서 랜덤 닉네임을 댓글 또는 답글에 부여하는 문제](#조선-시대에서-랜덤-닉네임을-댓글-또는-답글에-부여하는-문제)  
+  - [manytomany필드가 많아지면서 화면 로딩시간이 길어지는 문제](#manytomany필드가-많아지면서-화면-로딩시간이-길어지는-문제)  
+  - [실시간 전체회원 정치성향 증감률 구하는 문제](#실시간-전체회원-정치성향-증감률-구하는-문제)  
 - [Part 5. 보완할 점](#5-보완할-점)
 
 # 1. 프로젝트 소개
 **The Rank of Korea (2021)**
   
-  
-"내가 조선시대로 돌아가 정치를 한다면?"을 주제로 한 언론형 커뮤니티플랫폼입니다.   
+"내가 조선 시대로 돌아가 정치를 한다면?"을 주제로 한 언론형 커뮤니티플랫폼입니다. 플랫폼은 기본적인 커뮤니티 형태(게시글 + 댓글)에 오락요소(회원 레벨링, 사용자 아이템)를 더한 구성을 하였습니다.    
 
 기본적으로 Django 웹앱 기반 프로젝트입니다.
 
@@ -33,7 +31,7 @@
 - PyCharm, Visual Studio Code, Windows
 # 3. 주요 기능
 ## 조선 시대에서 글을 작성할 때마다 랜덤 닉네임을 부여하는 기능  
-조선 시대를 제외한 게시판에서는 회원가입 때 작성한 닉네임을 사용하지만 조선 시대에서는 익명성을 보장하기 위해 게시글이나 댓글, 답글을 작성할 때 무작위 닉네임을 부여합니다.  
+조선 시대를 제외한 게시판에서는 회원가입 때 작성한 닉네임을 사용하지만, 조선 시대에서는 익명성을 보장하기 위해 게시글이나 댓글, 답글을 작성할 때 무작위 닉네임을 부여합니다.  
 
 **1. 무작위 닉네임은 형용사 + 명사를 조합해서 사용합니다.**  
 **2. make_nickname 함수를 만들어 adjective.txt 와 word.txt에서 단어를 가져와 닉네임을 만들고 리턴합니다.**  
@@ -82,8 +80,8 @@ def post_economy(request):
   
   
 ## 화면 상단에서 전체회원의 정치성향 증감률을 실시간 확인하는 기능  
-플랫폼 성격상 특정 정치 성향에 편중 되지 않기 위해 전체 회원의 실시간 정치성향분포를 나타내기로 하였습니다. 증감률은 어제 23:59:55초의 회원 정보를 저장한 후 오늘의 증감분을 계산 후 출력하였습니다.  
-원하는 시간에 Python script 를 실행하기 위해 라이브러리 APScheduler를 사용하였습니다.  
+플랫폼 성격상 특정 정치 성향에 편중되지 않기 위해 전체 회원의 실시간 정치성향분포를 나타내기로 하였습니다. 증감률은 어제 23:59:55 초의 회원 정보를 저장한 후 오늘의 증감분을 계산 후 출력하였습니다.  
+원하는 시간에 Python script를 실행하기 위해 라이브러리 APScheduler를 사용하였습니다.  
 ```python
 scheduler = BackgroundScheduler()
 scheduler.add_jobstore(DjangoJobStore(), "default")
@@ -119,7 +117,7 @@ scheduler.start()
   
   
 ## 조선 시대 품계를 모델로 한 레벨링  
-회원가입을 하면 조선 시대 품계 종9품의 기자로 시작합니다. 평소 관심사에 대한 글을 쓰면서 품계 상승을 할 수있습니다. 품계는 종9품부터 정1품까지 나아 갈 수 있고 정1품이 되면 랭커가 될 수 있는 자격이 주어집니다. 종6품이상이 되면 전직 부서를 정할 수 있습니다. 부서의 종류는 공조, 이조, 사간원, 사헌부, 의금부가 있습니다. 부서별로 주어지는 역할과 레벨링 조건이 다릅니다.  
+회원가입을 하면 조선 시대 품계 종9품의 기자로 시작합니다. 평소 관심사에 대한 글을 쓰면서 품계 상승을 할 수 있습니다. 품계는 종9품부터 정1품까지 나아 갈 수 있고 정1품이 되면 랭커가 될 수 있는 자격이 주어집니다. 종6품 이상이 되면 전직 부서를 정할 수 있습니다. 부서의 종류는 공조, 이조, 사간원, 사헌부, 의금부가 있습니다. 부서별로 주어지는 역할과 레벨링 조건이 다릅니다.  
 단순 조건문으로 조건이 만족하면 레벨업을 수행하는 함수를 작성하였습니다.
 ```python
 def BAIlevelup(request):
@@ -147,7 +145,7 @@ def BAIlevelup(request):
 
   
 ## 상점과 아이템  
-상점에는 조선 시대에서 사용할 수 있는 아이템(창, 방패, 칼, 갑옷), 부서마다 다른 스페셜 아이템, 레벨업 재료인 증서와 키를 구매할 수 있습니다. 창과 방패는 게시글, 댓글, 답글에 대한 추천, 반대 효과가 있고 칼과 갑옷은 부적절한 유저에 대한 신고기능과 신고방어 효과가 있습니다.    
+상점에는 조선 시대에서 사용할 수 있는 아이템(창, 방패, 칼, 갑옷), 부서마다 다른 스페셜 아이템, 레벨업 재료인 증서와 키를 구매할 수 있습니다. 창과 방패는 게시글, 댓글, 답글에 대한 추천, 반대 효과가 있고 칼과 갑옷은 부적절한 사용자에 대한 신고기능과 신고방어 효과가 있습니다.    
 
 **1. 상점에서 창을 구매하는 함수 입니다.**  
 ```python
@@ -215,7 +213,7 @@ def add_spear(request):
   {% endif %}
 </form>
 ```  
-**4. 새로고침이 없는 버튼클릭을 위해 Ajax를 사용하여 구현하였습니다.**
+**4. 새로고침 없는 버튼클릭을 위해 Ajax를 사용하여 구현하였습니다.**
 ```javascript
 $(document).on('click', '#spear', function(event){
 	    event.preventDefault();
@@ -246,7 +244,7 @@ $(document).on('click', '#spear', function(event){
 </p>    
   
  ## 커뮤니티 게시판과 댓글  
-커뮤니티 게시판과 댓글, 답글을 구현해 보았습니다. Debug toolbar를 사용하여 쿼리가 중복되는 부분을 찾고 중복을 최소화 했습니다.  
+커뮤니티 게시판과 댓글, 답글을 구현해 보았습니다. Debug toolbar를 사용하여 쿼리가 중복되는 부분을 찾고 중복을 최소화했습니다.  
   
 **1. 게시글을 불러올 때 OneToOne관계와 ForeignKey관계에 있는 쿼리셋의 중복을 최소화하였습니다.**  
 ```python
@@ -267,7 +265,7 @@ class PublicIdeaListView(ListView):
 
         return context
 ```  
-**2. 댓글과 답글을 불러올 때 ForeignKey관계와 ManyToMany 관계에 있는 쿼리셋의 중복을 최소화하였습니다.**  
+**2. 댓글과 답글을 불러올 때 ForeignKey관계와 ManyToMany관계에 있는 쿼리셋의 중복을 최소화하였습니다.**  
 ```python
 @login_required(login_url='login')
 def crazylab_detail(request, pk):
@@ -314,17 +312,17 @@ def crazylab_detail(request, pk):
 </p>   
 
 # 4. 주요 이슈
-## 조선 시대에서 랜덤 닉네임을 댓글 또는 답글에 부여하는 것  
-조선 시대에서 글을 쓸 때는 익명성을 보장하기 위해 고정닉네임을 사용하는 것이 아니라 랜덤 닉네임을 그 때마다 생성하여 사용하기로 했습니다. 게시글을 포스트 할 때에는 Post model에 anonymous 속성을 추가하여 랜덤닉네임을 생성해서 넣어주면 포스트 마다 랜덤닉네임이 부여 되었습니다. 하지만 해당 게시글의 댓글을 쓸 때 문제가 생깁니다.  
+## 조선 시대에서 랜덤 닉네임을 댓글 또는 답글에 부여하는 문제  
+조선 시대에서 글을 쓸 때는 익명성을 보장하기 위해 고정 닉네임을 사용하는 것이 아니라 랜덤 닉네임을 그때마다 생성하여 사용하기로 했습니다. 게시글을 포스트 할 때는 Post model에 anonymous 속성을 추가하여 랜덤 닉네임을 생성해서 넣어주면 포스트마다 랜덤 닉네임이 부여되었습니다. 하지만 해당 게시글의 댓글을 쓸 때 문제가 생깁니다.  
 
 **문제**
-1. 예를들어 사용자 'A' 가 9번 게시글에 댓글을 쓰면 Post model에 anonymous 속성에  랜덤닉네임이 생성된 후 부여됩니다.    
-2. 만약에 사용자 'A'가 9번 게시글에 댓글을 한번 더 쓰면 랜덤닉네임을 또 다시 생성되어 9번 게시글에서 사용자'A'의 랜덤닉네임이 변경되었습니다.  
-3. 제가 하고자 했던 바는 'A'가 9번 게시글에서 댓글을 쓸 때는 1번에서 만들어진 랜덤닉네임을 계속 사용하는 것이었습니다.        
+1. 예를 들어 사용자 A가 9번 게시글에 댓글을 쓰면 Post model에 anonymous 속성에  랜덤닉네임이 생성된 후 부여됩니다.    
+2. 만약에 사용자 A가 9번 게시글에 댓글을 한 번 더 쓰면 랜덤 닉네임을 또다시 생성되어 9번 게시글에서 사용자 A의 랜덤닉네임이 변경되었습니다.  
+3. 제가 하고자 했던 바는 사용자 A가 9번 게시글에서 댓글을 쓸 때는 1번에서 만들어진 랜덤 닉네임을 계속 사용하는 것이었습니다.        
 
 **해결**
-1. Post model에 nickname_check 속성을 추가해서 manytomany필드로 만듭니다.  
-2. 이 속성에 처음에 댓글을 달면서 새로운 닉네임을 가지면 이제 nickname_check로 체크를 해주고 그다음에 댓글 쓸 때는 새로운 닉네임을 부여안하고 처음 닉네임을 가져오게 하였습니다.
+1. Post model에 nickname_check 속성을 추가해서 ManyToMany필드로 만듭니다.  
+2. 이 속성에 처음에 댓글을 달면서 새로운 랜덤 닉네임을 가지면 nickname_check으로 체크를 해주고 그다음에 댓글 쓸 때는 새로운 닉네임을 부여하지 않고 처음의 랜덤 닉네임을 가져오게 하였습니다.
 ```python
 if request.method =='POST':
     contents = request.POST.get('contents')
@@ -344,15 +342,68 @@ if request.method =='POST':
         comment.anonymous = name
     comment.save()
 ```
-## manytomany 필드가 많아지면서 화면 로딩시간이 길어져 추천기능 비동기화  
-유튜브에 좋아요 싫어요는 댓글이 많아져도 로딩 속도가 그대로인데 제가 처음에 댓글에 추천 반대를 구현 할때는 이거를 누를때마다 페이지가 로딩되어서 속도가 댓글이 많아 질수록 쿼리가 많아져서 로딩속도가 오래 걸렸습니다. 아 그래서 새로고침없이 비동기화로 해야 될 것 같아서 ajax를 사용해서 버튼을 바꿨습니다.
-## top 고정배너에 정치성향분포 표현 이슈  
-고정배너에 정치성향분포를 실시간 표현하기 위해 어제의 데이터를 매일 일정한 시간에 저장할 필요가 있었습니다. 처음에 생각한게 매일 일정한 시간에 해당 함수를 작동시키게끔 하면 된다를 생각하였습니다. 구글링을 해보니 이런 방법에 사용할 수 있는 목록이 celery, threading, schedule, apschedule 정도 있었고 하나하나 따져보면서 지금 상황에 맞는게 뭔지 고민하였습니다. apschedule 사용
-celery가 가장 적합해 보이긴 하는데 
-1. 지금 코린이 실력으로 조금 이해하기 어렵다.
-2. windows는 지원을 안한다? 지금 2012년산 삼성 노트북에 windows사용하고 있어 진성 windows만 사용해본 저로써는 ... 답이
-3. threading은 해도 잘 작동이 안하던데
-4. schedule은 정교하게 작동이 안되고
-5. 그래서 되는게 apschedule 이었습니다.
+## manytomany필드가 많아지면서 화면 로딩시간이 길어지는 문제  
+**문제**  
+처음 댓글단 구성에 추천/반대 기능을 ManyToMany필드로 만들었을 때 구현하는 데 신경을 쓰느라 로딩 시간은 생각하지 못하였습니다. 그런데 어느 정도 구현하고 댓글에서 추천/반대를 눌러보니 페이지가 새로 고침 되면서 시간이 상당히 걸렸습니다. 이 로딩 시간이 댓글이 많아질수록 로딩 시간이 길어졌습니다. 유튜브만 사용해봐도 댓글에 있는 '좋아요/싫어요' 를 눌렀을 때 로딩 체감시간이 전혀 불편하지 않은데 제가 만든 추천/반대는 상식을 벗어나는 로딩속도를 보여주고 있었습니다.  
+**<p align="center"><Debug toolbar 화면></p>**
+<p align="center">
+  <img width="100%" height="100%" src="https://user-images.githubusercontent.com/82914197/121477171-7b299480-ca02-11eb-83a2-561529f12f14.JPG">
+</p>  
 
-# 5. 보완할 점
+**해결방법**  
+쿼리 중복을 최소한 한다고는 했지만 긴 로딩속도에 대해 다른 해결 방법을 찾아야 했습니다. 추천 버튼을 누를 때 새로 고침이 계속 발생하니까 여기서부터 방법을 찾으면 될 것 같아서 새로 고침을 안 하는 방향으로 해결 방법을 찾아보았습니다. 검색하던 중 Ajax를 사용해서 비동기적인 처리를 하면 페이지를 새로 고침 하지 않고 데이터만 주고받을 수 있다고 하여 추천/반대 기능뿐만 아니라 댓글, 답글을 작성하는 것과 아이템을 사용하는 모든 처리에서 비동기화를 구현하였습니다.
+
+## 실시간 전체회원 정치성향 증감률 구하는 문제  
+화면 상단에 전체 회원 정치성향 증감률을 실시간 표현하기 위해 어제의 데이터를 매일 일정한 시간에 저장할 필요가 있었습니다. 이를 위해서는 매일 일정한 시간에 해당 역할을 하는 함수를 작동시키게끔 하면 된다고 생각하였습니다. 검색해보니 이런 방법에 사용할 수 있는 목록이 celery, threading, schedule, apschedule 정도 있었습니다.  
+**1. celery**  
+ 사실 celery가 가장 이상적인 방법인 것 같았으나 아래 두 이유로 보류
+ - celery 4.0부터 윈도우 운영체제를 지원하지 않는 것(물론 windows에서도 gevent 패키지를 설치하고 진행하면 되는 것 같습니다)[2012년산 삼성노트북 사용 중]
+ - celery 작동 방법이 조금 더 배경지식이 있어야 정확히 이해하고 사용할 수 있을 것 같다고 생각    
+  
+**2. threading**  
+하나의 작업을 매일 일정 시간에 수행하기에는 적합하였으나 지금은 구현하지 못하였지만, 멀티 쓰레드 프로그램 같은 10개 이상의 작업을 생각하고 있었기 때문에 threading을 이용하여 구현했을 때 파이썬 GIL(Global Interpreter Lock)때문에 원활한 작업이 되지 않을 것 같아서 보류
+```python
+from threading import Timer
+import threading
+
+def timer_delete():
+    print('test')
+    num_progressivism = JProfile.objects.filter(political_orientation='progressivism').count()
+    classification_progressivism = Classification.objects.get(political_orientation='progressivism')
+    classification_progressivism.numberOfUser = 2
+    classification_progressivism.save()
+
+timer = threading.Timer(1,timer_delete).start()
+```  
+
+**3. schedule**  
+schedule은 사용하기에 큰 어려움이 없어서 사용하려고 했지만, 작업을 동적으로 추가하거나 유지할 수 없는 단점 때문에 마지막에 찾은 APScheduler를 사용하기로 하였습니다.  
+```python
+import schedule
+import time
+
+def job():
+    print("test...")
+    num_progressivism = JProfile.objects.filter(political_orientation='progressivism').count()
+    classification_progressivism = Classification.objects.get(political_orientation='progressivism')
+    classification_progressivism.numberOfUser = 3
+    classification_progressivism.save()
+schedule.every(5).seconds.do(job)
+schedule.every().day.at("20:32").do(job)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+```
+**4. APScheduler 채택**
+>I think APScheduler is a tool library that is best used in actual projects.Not only does it allow us to dynamically add and remove our timed tasks in the program, but it also supports persistence, and its persistence scheme supports many forms, including (Memory, MongoDB, SQLAlchemy, Redis, RethinkDB, ZooKeeper), and it can be very good. Integration with some Python frameworks (including asyncio, gevent, Tornado, Twisted, Qt)  
+      
+출처 : https://www.programmersought.com/article/6923889412/
+
+# 5. 보완할 점  
+파이썬으로 *print('Hello world')* 정도의 문법만 익히고 바로 시작한 첫 프로젝트라서 아쉬운 점이 많은 프로젝트입니다. 정말 많은 시행착오와 이슈가 있었는데 Github의 존재도 프로젝트를 마무리할 때부터 알게 되어서 소중한 이슈들을 다 기록하지는 못하였습니다. 다행히 주요 이슈들은 스크린샷으로 찍어놔서 Readme에 기록할 수 있었습니다.  
+
+**보완**  
+- 구글링을 하던 중에 Rest API, Django REST framework가 있고 현업에서 많이 쓰인다는 것을 알게 되었습니다. Rest API에 관해 공부하고 프로젝트를 좀더 Restful하게 만들어 봐야겠습니다.  
+- 구현에만 초점을 맞추다 보니 개발의 유지보수, 확장성을 신경 쓰지 않은 것 같습니다. 반복, 중복되는 코드를 줄여보고 좀 더 Pythonic한 코드로 다시 빌드업해 봐야겠습니다.  
+- 서비스를 AWS로 배포하면서 네트워크 지식이 많이 부족함을 알 수 있었습니다. '왜 Nginx, uWSGI 좋은 선택지가 될 수 있는지', 'Nginx, uWSGI의 원리와 사용방법' 등을 정확히 이해하고 Ubuntu 환경에서 다시 배포해 봐야겠습니다.
