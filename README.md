@@ -21,7 +21,7 @@
 
 기본적으로 Django 웹앱 기반 프로젝트입니다.
 
-**https://therok.net**
+:exclamation: version2로 바뀜 --> **https://therok.net**
 
 # 2. 사용 기술 스택
 - **Front - Javascript, Ajax**
