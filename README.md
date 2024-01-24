@@ -10,7 +10,6 @@
 - [Part 4. 주요 이슈](#4-주요-이슈)  
   - [조선 시대에서 랜덤 닉네임을 댓글 또는 답글에 부여하는 문제](#조선-시대에서-랜덤-닉네임을-댓글-또는-답글에-부여하는-문제)  
   - [댓글 작성 시 manytomany필드가 많아지면서 화면 로딩 시간이 길어지는 문제](#댓글-작성-시-manytomany필드가-많아지면서-화면-로딩-시간이-길어지는-문제)  
-  - [실시간 전체회원 정치성향 증감률 구하는 문제](#실시간-전체회원-정치성향-증감률-구하는-문제)  
 - [Part 5. 보완할 점](#5-보완할-점)
   
 <br/><br/><br/>
@@ -391,53 +390,6 @@ def up_comment(request):
             html = render_to_string('joseon/section/top_up_section.html', context, request=request)
     return JsonResponse({'form': html})
 ```
-
-## 실시간 전체회원 정치성향 증감률 구하는 문제  
-화면 상단에 전체 회원 정치성향 증감률을 실시간 표현하기 위해 어제의 데이터를 매일 일정한 시간에 저장할 필요가 있었습니다. 이를 위해서는 매일 일정한 시간에 해당 역할을 하는 함수를 작동시키게끔 하면 된다고 생각하였습니다. 검색해보니 이런 방법에 사용할 수 있는 목록이 celery, threading, schedule, apschedule 정도 있었습니다.  
-**1. celery**  
- 사실 celery가 가장 이상적인 방법인 것 같았으나 아래 두 이유로 보류
- - celery 4.0부터 윈도우 운영체제를 지원하지 않는 것(물론 windows에서도 gevent 패키지를 설치하고 진행하면 되는 것 같습니다)[2012년산 삼성노트북 사용 중]
- - celery 작동 방법이 조금 더 배경지식이 있어야 정확히 이해하고 사용할 수 있을 것 같다고 생각    
-  
-**2. threading**  
-하나의 작업을 매일 일정 시간에 수행하기에는 적합하였으나 지금은 구현하지 못하였지만, 멀티 쓰레드 프로그램 같은 10개 이상의 작업을 생각하고 있었기 때문에 threading을 이용하여 구현했을 때 파이썬 GIL(Global Interpreter Lock)때문에 원활한 작업이 되지 않을 것 같아서 보류
-```python
-from threading import Timer
-import threading
-
-def timer_delete():
-    print('test')
-    num_progressivism = JProfile.objects.filter(political_orientation='progressivism').count()
-    classification_progressivism = Classification.objects.get(political_orientation='progressivism')
-    classification_progressivism.numberOfUser = 2
-    classification_progressivism.save()
-
-timer = threading.Timer(1,timer_delete).start()
-```  
-
-**3. schedule**  
-schedule은 사용하기에 큰 어려움이 없어서 사용하려고 했지만, 작업을 동적으로 추가하거나 유지할 수 없는 단점 때문에 마지막에 찾은 APScheduler를 사용하기로 하였습니다.  
-```python
-import schedule
-import time
-
-def job():
-    print("test...")
-    num_progressivism = JProfile.objects.filter(political_orientation='progressivism').count()
-    classification_progressivism = Classification.objects.get(political_orientation='progressivism')
-    classification_progressivism.numberOfUser = 3
-    classification_progressivism.save()
-schedule.every(5).seconds.do(job)
-schedule.every().day.at("20:32").do(job)
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
-```
-**4. APScheduler 채택**
->I think APScheduler is a tool library that is best used in actual projects.Not only does it allow us to dynamically add and remove our timed tasks in the program, but it also supports persistence, and its persistence scheme supports many forms, including (Memory, MongoDB, SQLAlchemy, Redis, RethinkDB, ZooKeeper), and it can be very good. Integration with some Python frameworks (including asyncio, gevent, Tornado, Twisted, Qt)  
-      
-출처 : https://www.programmersought.com/article/6923889412/
 
 # 5. 보완할 점  
 파이썬으로 *print('Hello world')* 정도의 문법만 익히고 바로 시작한 첫 프로젝트라서 아쉬운 점이 많은 프로젝트입니다. 정말 많은 시행착오와 이슈가 있었는데 Github의 존재도 프로젝트를 마무리할 때부터 알게 되어서 소중한 이슈들을 다 기록하지는 못하였습니다. 다행히 주요 이슈들은 스크린샷으로 찍어놔서 Readme에 기록할 수 있었습니다.  
